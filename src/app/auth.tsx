@@ -19,7 +19,6 @@ export const {
 		Credentials({
 			async authorize({ email, password }: any) {
 				try {
-               console.log('hmmmm', email, password)
 					const user = await getUser(email);
 					if (!user) return null;
 					const passwordsMatch = await bcrypt.compare(

@@ -19,8 +19,6 @@ export default function Register() {
 		const email = formData.get('email');
 		const password = formData.get('password');
 		const user = await getUser(email);
-		console.log('mu user', user);
-
 		if (user) {
 			console.log('User already exists');
 		} else {

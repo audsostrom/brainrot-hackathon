@@ -17,9 +17,6 @@ export async function GET(req: any) {
    const fileContents = await Promise.all(
       baseProjectFiles.map(async (filePath) => {
         const url = `http://localhost:3000/guides/base/${filePath}`;
-        console.log(
-         'filepatj', url
-      )
         const response = await fetch(url);
         const text = await response.text();
         return { file: filePath, content: text };

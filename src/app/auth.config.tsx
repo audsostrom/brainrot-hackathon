@@ -7,9 +7,8 @@ export const authConfig = {
   providers: [],
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
-      let isLoggedIn = !!auth?.user;
-      console.log('here', isLoggedIn)
-      let isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
+      const isLoggedIn = !!auth?.user;
+      const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
 
       // redirect unauthenticated users to login page
       if (isOnDashboard) {
