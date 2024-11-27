@@ -1,13 +1,16 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import { WebContainer } from '@webcontainer/api';
 import { convertFilesToTree } from '@/utils/tree';
 import PreviewTerminal from '@/components/preview-terminal/preview-terminal';
+import 'codemirror/lib/codemirror.css';
 
+// relevant documentation: https://codesandbox.io/p/devbox/codemirror-v6-nextjs-multiple-editors-5kpikv?file=%2Fcomponents%2FCodeEditorOld%2FCodeEditor.js%3A10%2C50
 export default function Guide() {
    const [webContainer, setWebContainer] = useState<WebContainer | null>(null);
    const [files, setFiles] = useState<{file: string, content: string}[]>([]);
+   const codeMirrorRef = useRef<HTMLIFrameElement | null>(null);
 
    useEffect(() => {
       const fetchFiles = async () => {
@@ -43,6 +46,9 @@ export default function Guide() {
             </li>
          ))}
       </ul>
+
+      <textarea ref={codeMirrorRef}></textarea>
+
       <PreviewTerminal webContainer={webContainer}/>
       </div>
    );
