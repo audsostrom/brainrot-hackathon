@@ -6,21 +6,53 @@ import PreviewTerminal from '@/components/preview-terminal/preview-terminal';
 import { WebContainer } from '@webcontainer/api';
 import { useParams } from "next/navigation";
 import { transformGuide } from '@/utils/markdown';
-import CodeMirrorEditor from '@/components/code-editor/code-editor';
+import CodeMirrorEditor, { SupportedLanguage } from '@/components/code-editor/code-editor';
+
 
 export default function Guide() {
   const { webContainer, setWebContainer } = useWebContainer();
   const [files, setFiles] = useState<{ file: string; content: string }[]>([]);
   const [guideText, setGuideText] = useState<string>('');
-  const codeMirrorRef = useRef<HTMLIFrameElement | null>(null);
+  const [currentFile, setCurrentFile] = useState<{ 
+   file: string; 
+   type: SupportedLanguage 
+ } | null>(null); // Tracks the current file open in the editor, along with its content and type (HTML, CSS, etc.)
+ const [currentFileContent, setCurrentFileContent] = useState<string>(''); // Tracks the current file open in the editor, along with its content and type (HTML, CSS, etc.)
   const params = useParams();
   const guideId = params.guide;
   const courseId = params.course;
 
-  const [code, setCode] = useState('// Write your JavaScript code here');
+  const parseLanguage = (fileType: string): SupportedLanguage => {
+   const languageMap: Record<string, SupportedLanguage> = {
+     html: "html",
+     css: "css",
+     markdown: "markdown",
+     javascript: "javascript",
+     jsx: "javascript",
+     scss: "css",
+     sass: "css",
+     typescript: "javascript",
+   };
+ 
+   return languageMap[fileType.toLowerCase()] || 'markdown';
+ };
 
-  const writeToFile = (fileContent: string) => {
-   setCode(fileContent);
+  const openFile = async (file: string) => {
+   if (webContainer) {
+     const fileContent = await webContainer.fs.readFile(file, 'utf-8');
+     const fileType = file.split('.').pop() || 'unknown';
+      const language = parseLanguage(fileType);
+
+      setCurrentFile({
+         file: file,
+         type: language, // Add parsed language here
+       });
+      setCurrentFileContent(fileContent)
+   }
+ }
+
+  const writeToFile = async (fileContent: string) => {
+   await webContainer?.fs.writeFile(currentFile?.file ?? '', fileContent);
   }
 
   useEffect(() => {
@@ -28,17 +60,16 @@ export default function Guide() {
       try {
          console.log('hook')
          const response = await fetch(`/api/grab-files?id=${guideId}`);
-
          const responseJson = await response.json();
          const data: {file: string, content: string}[] = responseJson.response;
          const initFiles = convertFilesToTree(data);
          if (!webContainer) {
             const webcontainerInstance: WebContainer = await WebContainer.boot();
-            await webcontainerInstance.mount(initFiles)
+            await webcontainerInstance.mount(initFiles);
             setWebContainer(webcontainerInstance);
             console.log(initFiles)
          } else {
-            await webContainer.mount(initFiles)
+            await webContainer.mount(initFiles);
          }
          setFiles(data);
       } catch (error) {
@@ -51,18 +82,21 @@ export default function Guide() {
 useEffect(() => {
   const fetchGuide = async () => {
      try {
-        console.log('hook')
-        const response = await fetch(`/api/grab-guide?id=${guideId}`);
-        const responseJson = await response.json();
-        const data = responseJson.response;
-        const parsedHTML = await transformGuide(data.content)
-        setGuideText(parsedHTML);
+         if (webContainer) {
+            console.log('hook')
+            const response = await fetch(`/api/grab-guide?id=${guideId}`);
+            const responseJson = await response.json();
+            const data = responseJson.response;
+            const parsedHTML = await transformGuide(data.content)
+            openFile
+            setGuideText(parsedHTML);
+         }
      } catch (error) {
         console.error('Error fetching gjide:', error);
      }
   };
   fetchGuide();
-}, [guideId]);
+}, [webContainer]);
 
   return (
     <div>
@@ -80,9 +114,9 @@ useEffect(() => {
       <div>
       <h1>CodeMirror Editor</h1>
       <CodeMirrorEditor
-        value={code}
+        value={currentFileContent}
         onChange={writeToFile}
-        language="html" // or "javascript" / "css"
+        language={currentFile?.type ?? 'markdown'} // or "javascript" / "css"
       />
     </div>
 

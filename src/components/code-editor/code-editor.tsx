@@ -6,11 +6,15 @@ import { html } from '@codemirror/lang-html';
 import { css } from '@codemirror/lang-css';
 import { oneDark } from '@codemirror/theme-one-dark';
 import { autocompletion } from '@codemirror/autocomplete';
+import { markdown } from '@codemirror/lang-markdown';
+
+
+export type SupportedLanguage = 'javascript' | 'html' | 'css' | 'markdown';
 
 interface CodeMirrorEditorProps {
   value: string;
   onChange: (value: string) => void;
-  language: 'javascript' | 'html' | 'css';
+  language: SupportedLanguage; // relevant docs https://codemirror.net/examples/lang-package/
 }
 
 const CodeMirrorEditor: React.FC<CodeMirrorEditorProps> = ({ value, onChange, language }) => {
@@ -25,6 +29,7 @@ const CodeMirrorEditor: React.FC<CodeMirrorEditorProps> = ({ value, onChange, la
       javascript: javascript(),
       html: html(),
       css: css(),
+      markdown: markdown()
     }[language];
 
     const updateListener = EditorView.updateListener.of((update) => {

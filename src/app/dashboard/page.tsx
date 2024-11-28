@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createFile, getCoursesWithGuides } from "../db";
+import { auth } from "../auth";
 
 interface Guide {
 	_id: string;
@@ -25,6 +26,8 @@ interface Guide {
 export default async function Dashboard() {
 	const courses: CourseWithGuides[] = await getCoursesWithGuides();
 	console.log(courses);
+	const session = await auth();
+	console.log(session);
 	return (
 			<div>
 			  <h1>Courses</h1>

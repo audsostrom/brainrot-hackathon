@@ -26,6 +26,7 @@ export const {
 					);
 					if (passwordsMatch) {
 						return {
+							// name: 
 							email: email,
 						};
 					} else {
