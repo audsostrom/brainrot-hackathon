@@ -41,10 +41,16 @@ export default function PreviewTerminal({ webContainer }: PreviewTerminalProps) 
    }, [webContainer]); // This hook will run when `webContainer` changes
 
    return (
-      <div className='bg-white'>
-         <iframe frameBorder="0" id="iframeEl" ref={iframeEl}>
-            The iframe; this is where the rendered view should display
-         </iframe>
+      <div className="w-full h-3/5 bg-white">
+        <iframe
+          className="w-full h-full"
+          frameBorder="0"
+          id="iframeEl"
+          ref={iframeEl}
+        >
+          The iframe; this is where the rendered view should display
+        </iframe>
       </div>
-   );
+    );
+    
 }

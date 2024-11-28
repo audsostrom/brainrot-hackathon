@@ -98,29 +98,23 @@ useEffect(() => {
   fetchGuide();
 }, [webContainer]);
 
-  return (
-    <div>
-      <h1>Files in the Project</h1>
-      <ul>
-        {files.map((fileData, index) => (
-          <li key={index}>
-            <h3>{fileData.file}</h3>
-          </li>
-        ))}
-      </ul>
+return (
+   <div className="flex-1 flex flex-row">
+     {/** Guide side on the left */}
+     <div className="w-2/5 flex-1 overflow-y-auto">
+       <h1>Guide</h1>
+       <div dangerouslySetInnerHTML={{ __html: guideText }}></div>
+     </div>
 
-      <div dangerouslySetInnerHTML={{ __html: guideText }}></div>
-
-      <div>
-      <h1>CodeMirror Editor</h1>
-      <CodeMirrorEditor
-        value={currentFileContent}
-        onChange={writeToFile}
-        language={currentFile?.type ?? 'markdown'} // or "javascript" / "css"
-      />
-    </div>
-
-      <PreviewTerminal webContainer={webContainer} />
-    </div>
-  );
+     {/** Editor and Preview */}
+     <div className="w-3/5 flex-1 flex flex-col">
+       <CodeMirrorEditor
+         value={currentFileContent}
+         onChange={writeToFile}
+         language={currentFile?.type ?? "markdown"} // or "javascript" / "css"
+       />
+       <PreviewTerminal webContainer={webContainer} />
+     </div>
+   </div>
+ );
 }

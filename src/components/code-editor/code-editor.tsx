@@ -8,7 +8,6 @@ import { oneDark } from '@codemirror/theme-one-dark';
 import { autocompletion } from '@codemirror/autocomplete';
 import { markdown } from '@codemirror/lang-markdown';
 
-
 export type SupportedLanguage = 'javascript' | 'html' | 'css' | 'markdown';
 
 interface CodeMirrorEditorProps {
@@ -73,8 +72,7 @@ const CodeMirrorEditor: React.FC<CodeMirrorEditorProps> = ({ value, onChange, la
       }
     }
   }, [value]);
-
-  return <div ref={editorRef} className="bg-[#282c34] h-[300px] overflow-y-scroll" />;
+  return <div ref={editorRef} className={`bg-[#282c34] overflow-y-scroll flex flex-1`} />;
 };
 
 export default CodeMirrorEditor;

@@ -33,7 +33,7 @@ export default function RootLayout({
       >
     <WebContainerProvider>
         <Navbar />
-        <div className={'flex-1 px-6 py-5 mt-10'}>
+        <div className={'flex-1 h-full flex flex-col'}>
             {children}
         </div>
         <Footer />

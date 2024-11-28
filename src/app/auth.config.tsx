@@ -19,8 +19,6 @@ export const authConfig = {
          // and if they're signed in don't let them to the sign-in page
          return Response.redirect(new URL('/dashboard', nextUrl));
       }
-
-
       return true;
     },
   },
