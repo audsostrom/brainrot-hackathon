@@ -10,7 +10,7 @@ interface Guide {
 	createdAt: string;
 	updatedAt: string;
  }
- 
+
  interface CourseWithGuides {
 	_id: string;
 	title: string;
@@ -35,7 +35,7 @@ export default async function Dashboard() {
 					  <ul>
 						 {course.guides.map((guide) => (
 							<li key={guide._id}>
-								<Link href={`guide/${course._id}/${guide._id}`}>							 
+								<Link href={`guide/${course._id}/${guide._id}`}>
 									<strong>{guide.title}</strong>
 								</Link>
 							</li>
