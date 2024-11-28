@@ -127,3 +127,18 @@ export async function getCoursesWithGuides() {
   }
 }
 
+
+export async function getGuide(id: string) {
+	try {
+		await connectMongoDB();
+		// findOne() gives one document that matches the criteria
+		const guide = await Guide.findById(id)
+		const returnVal = guide === null ? null : guide;
+		return returnVal;
+	} catch (error) {
+		return NextResponse.json(
+			{message: 'An error occurred while getting the user.'},
+			{status: 500}
+		);
+	}
+}
