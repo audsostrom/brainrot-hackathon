@@ -18,11 +18,13 @@ export default function Register() {
 		'use server';
 		const email = formData.get('email');
 		const password = formData.get('password');
+		const name = await formData.get('name');
 		const user = await getUser(email);
+		
 		if (user) {
 			console.log('User already exists');
 		} else {
-			await createUser(email, password);
+			await createUser(email, password, name);
 			redirect('/login');
 		}
 	}

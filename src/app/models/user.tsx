@@ -6,11 +6,18 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    name: {
+      type: String,
+      requried: true,
+    },
     password: {
       type: String,
       required: true,
     },
-  },
+    profilePicture: {
+      type: String,
+      required: false
+    }  },
   { timestamps: true }
 );
 

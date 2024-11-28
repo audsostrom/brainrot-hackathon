@@ -1,7 +1,9 @@
 import User from './models/user';
-import {NextResponse} from 'next/server';
+import { NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
+import Guide from './models/guide';
+import Course from './models/course';
 
 
 /**
@@ -25,16 +27,15 @@ export const connectMongoDB = async () => {
  * This password is hashed with bcrypt before being stored for security.
  * @return {NextResponse} – Represents the operation's success (201 or 500).
  */
-export async function createUser(email: string, password: string) {
+export async function createUser(email: string, password: string, name: string) {
 	try {
 		const hashedPassword = await bcrypt.hash(password, 10);
 		await connectMongoDB();
 		// create new user in database with no saved recipes to start
 		await User.create({
 			email,
+			name,
 			password: hashedPassword,
-			savedRecipes: [],
-			savedIngredients: [],
 		});
 		return NextResponse.json(
 			{message: 'User registered.'},
@@ -75,3 +76,54 @@ export async function getUser(email: string) {
 		);
 	}
 }
+
+
+// Guide STUFF
+
+/** Lowkey this just is here to make some random guides */
+export async function createGuide() {
+	try {
+		await connectMongoDB();
+		// Create Dummy Guides
+		await Guide.create({
+			courseId: 'fdvdf',
+			content: 'savafd',
+			description: 'avffda',
+			title: 'adfvdf'
+		});
+		await Course.create({
+			title: 'dvssdv',
+			description: 'sdvsd',
+			guideIds: ['dfvdf'],
+		});
+		return NextResponse.json(
+			{message: 'User registered.'},
+			{status: 201}
+		);
+	} catch (error) {
+		return NextResponse.json(
+			{message: 'An error occurred while registering the user.'},
+			{status: 500}
+		);
+	}
+}
+
+export async function getCoursesWithGuides() {
+  try {
+    await connectMongoDB();
+
+    const courses = await Course.find(); // Fetch all courses
+    const coursesWithGuides = await Promise.all(
+      courses.map(async (course) => {
+        const guides = await Guide.find({ _id: { $in: course.guideIds } });
+        return { ...course.toObject(), guides };
+      })
+    );
+
+    return coursesWithGuides;
+  } catch (error) {
+    console.error('Error fetching courses with guides:', error);
+    throw error;
+  }
+}
+

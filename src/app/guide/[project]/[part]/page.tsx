@@ -1,10 +1,9 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { GetServerSideProps } from 'next';
 import { WebContainer } from '@webcontainer/api';
 import { convertFilesToTree } from '@/utils/tree';
 import PreviewTerminal from '@/components/preview-terminal/preview-terminal';
-import 'codemirror/lib/codemirror.css';
+
 
 // relevant documentation: https://codesandbox.io/p/devbox/codemirror-v6-nextjs-multiple-editors-5kpikv?file=%2Fcomponents%2FCodeEditorOld%2FCodeEditor.js%3A10%2C50
 export default function Guide() {
@@ -46,6 +45,8 @@ export default function Guide() {
             </li>
          ))}
       </ul>
+
+      <div dangerouslySetInnerHTML={{ __html: '' }} ></div>
 
       <div ref={codeMirrorRef}></div>
 

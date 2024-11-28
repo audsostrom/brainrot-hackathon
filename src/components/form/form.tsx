@@ -6,6 +6,21 @@ export function Form({action, children}: any) {
 		<form
 			action={action}
 		>
+						<div>
+				<label
+					htmlFor="name"
+				>
+          Name
+				</label>
+				<input
+					id="name"
+					name="name"
+					type="text"
+					placeholder="Enter name"
+					autoComplete="name"
+					required
+				/>
+			</div>
 			<div>
 				<label
 					htmlFor="email"

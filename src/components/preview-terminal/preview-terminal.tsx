@@ -5,6 +5,8 @@ interface PreviewTerminalProps {
   webContainer: WebContainer | null;
 }
 
+// https://codesandbox.io/p/devbox/codemirror-v6-nextjs-multiple-editors-5kpikv?file=%2Fcomponents%2FCodeEditorOld%2FCodeEditor.js%3A103%2C6
+
 /** Where users can preview their NextJs projects */
 export default function PreviewTerminal({ webContainer }: PreviewTerminalProps) {
    const iframeEl = useRef<HTMLIFrameElement | null>(null);
@@ -39,7 +41,7 @@ export default function PreviewTerminal({ webContainer }: PreviewTerminalProps) 
    }, [webContainer]); // This hook will run when `webContainer` changes
 
    return (
-      <div>
+      <div className='bg-white'>
          <iframe frameBorder="0" id="iframeEl" ref={iframeEl}>
             The iframe; this is where the rendered view should display
          </iframe>
