@@ -47,7 +47,7 @@ export default function Guide() {
          ))}
       </ul>
 
-      <textarea ref={codeMirrorRef}></textarea>
+      <div ref={codeMirrorRef}></div>
 
       <PreviewTerminal webContainer={webContainer}/>
       </div>
