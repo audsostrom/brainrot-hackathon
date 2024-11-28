@@ -6,6 +6,7 @@ import PreviewTerminal from '@/components/preview-terminal/preview-terminal';
 import { WebContainer } from '@webcontainer/api';
 import { useParams } from "next/navigation";
 import { transformGuide } from '@/utils/markdown';
+import CodeMirrorEditor from '@/components/code-editor/code-editor';
 
 export default function Guide() {
   const { webContainer, setWebContainer } = useWebContainer();
@@ -16,11 +17,18 @@ export default function Guide() {
   const guideId = params.guide;
   const courseId = params.course;
 
+  const [code, setCode] = useState('// Write your JavaScript code here');
+
+  const writeToFile = (fileContent: string) => {
+   setCode(fileContent);
+  }
+
   useEffect(() => {
    const fetchFiles = async () => {
       try {
          console.log('hook')
-         const response = await fetch('/api/grab-files');
+         const response = await fetch(`/api/grab-files?id=${guideId}`);
+
          const responseJson = await response.json();
          const data: {file: string, content: string}[] = responseJson.response;
          const initFiles = convertFilesToTree(data);
@@ -54,7 +62,7 @@ useEffect(() => {
      }
   };
   fetchGuide();
-}, [guideText]);
+}, [guideId]);
 
   return (
     <div>
@@ -69,7 +77,14 @@ useEffect(() => {
 
       <div dangerouslySetInnerHTML={{ __html: guideText }}></div>
 
-      <div ref={codeMirrorRef}></div>
+      <div>
+      <h1>CodeMirror Editor</h1>
+      <CodeMirrorEditor
+        value={code}
+        onChange={writeToFile}
+        language="html" // or "javascript" / "css"
+      />
+    </div>
 
       <PreviewTerminal webContainer={webContainer} />
     </div>

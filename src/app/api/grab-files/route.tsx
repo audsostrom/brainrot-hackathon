@@ -13,8 +13,11 @@ const baseProjectFiles = [
 ];
 
 export async function GET(req: any) {
+  const { searchParams } = new URL(req.url);
+  const guideId = searchParams.get('id');
+  const guideFileContents = [{}]
    // brainrot-hackathon/public/guides/base/app/favicon.ico
-   const fileContents = await Promise.all(
+   const baseFileContents = await Promise.all(
       baseProjectFiles.map(async (filePath) => {
         const url = `http://localhost:3000/guides/base/${filePath}`;
         const response = await fetch(url);
@@ -22,6 +25,7 @@ export async function GET(req: any) {
         return { file: filePath, content: text };
       })
     );
+    const fileContents = [...guideFileContents, ...baseFileContents];
 
 	return Response.json({ response: fileContents});
 }
