@@ -14,7 +14,11 @@ const guideSchema = new Schema(
       type: String,
       required: true,
     },
-    content: {
+    startingFile: { // i.e. app/layout.tsx
+      type: String,
+      required: true,
+    },
+    content: { // in markdown format
       type: String,
       required: true,
     },

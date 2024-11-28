@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getCoursesWithGuides } from "../db";
+import { createFile, getCoursesWithGuides } from "../db";
 
 interface Guide {
 	_id: string;
