@@ -28,6 +28,7 @@ export const {
 						return {
 							// name: 
 							email: email,
+							id: user['id'],
 						};
 					} else {
 						return null;
