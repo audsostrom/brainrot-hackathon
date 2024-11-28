@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
 import Guide from './models/guide';
 import Course from './models/course';
+import File from './models/file';
 
 
 /**
@@ -108,6 +109,36 @@ export async function createGuide() {
 	}
 }
 
+/** Lowkey this just is here to make some random file */
+export async function createFile() {
+	try {
+		await connectMongoDB();
+		// Create Dummy Guides
+		await File.create({
+			guideId: 'dsf',
+			name: 'dsf',
+			content: 'dsf',
+		});
+	} catch (error) {
+		return NextResponse.json(
+			{message: 'An error occurred while registering the user.'},
+			{status: 500}
+		);
+	}
+}
+
+/** Lowkey this just is here to make some random file */
+export async function getGuideFiles(guideId: string) {
+	try {
+		await connectMongoDB();
+		return await File.find({ guideId: guideId });
+	} catch (error) {
+		console.error('Error fetching guides:', error);
+    throw error;
+	}
+}
+
+/** Used in dashboard */
 export async function getCoursesWithGuides() {
   try {
     await connectMongoDB();
@@ -127,3 +158,18 @@ export async function getCoursesWithGuides() {
   }
 }
 
+
+export async function getGuide(id: string) {
+	try {
+		await connectMongoDB();
+		// findOne() gives one document that matches the criteria
+		const guide = await Guide.findById(id)
+		const returnVal = guide === null ? null : guide;
+		return returnVal;
+	} catch (error) {
+		return NextResponse.json(
+			{message: 'An error occurred while getting the user.'},
+			{status: 500}
+		);
+	}
+}

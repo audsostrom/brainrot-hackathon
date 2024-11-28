@@ -1,24 +1,25 @@
 import mongoose, { Schema, models } from "mongoose";
 
-const guideSchema = new Schema(
+/** For carrying over user progress across an entire course */
+const userFileSchema = new Schema(
   {
+    guideId: {
+      type: String,
+      required: true,
+    },
     courseId: {
       type: String,
       required: true,
     },
-    title: {
+    userId: {
       type: String,
       required: true,
     },
-    description: {
+    name: {
       type: String,
       required: true,
     },
-    startingFile: { // i.e. app/layout.tsx
-      type: String,
-      required: true,
-    },
-    content: { // in markdown format
+    content: {
       type: String,
       required: true,
     },
@@ -26,5 +27,5 @@ const guideSchema = new Schema(
   { timestamps: true }
 );
 
-const Guide = models.Guide || mongoose.model("Guide", guideSchema);
-export default Guide;
+const UserFile = models.File || mongoose.model("UserFile", userFileSchema);
+export default UserFile;

@@ -138,14 +138,14 @@ export async function transform(markdown: string, options: Partial<Renderer> = {
   return await marked(markdown, { renderer: markdownRenderer });
 }
 
-export async function transformGuide(path: string, markdown: string): Promise<string> {
+export async function transformGuide(markdown: string): Promise<string> {
   const regex = /```[a-z]+\n([\s\S]+?)\n```/g;
   let match;
 
   while ((match = regex.exec(markdown)) !== null) {
     const content = match[1];
     if (!content.includes('/// file') && !content.includes('/// no-file')) {
-      throw new Error(`Code block lacks a \`/// file: ...\` annotation: ${path}`);
+      throw new Error(`Code block lacks a \`/// file: ...\` annotation`);
     }
   }
 
