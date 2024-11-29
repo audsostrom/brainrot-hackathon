@@ -63,6 +63,7 @@ export default function Guide() {
          const responseJson = await response.json();
          const data: {file: string, content: string}[] = responseJson.response;
          const initFiles = convertFilesToTree(data);
+         console.log(data, initFiles)
          if (!webContainer) {
             const webcontainerInstance: WebContainer = await WebContainer.boot();
             await webcontainerInstance.mount(initFiles);
@@ -88,7 +89,8 @@ useEffect(() => {
             const responseJson = await response.json();
             const data = responseJson.response;
             const parsedHTML = await transformGuide(data.content)
-            openFile
+            console.log()
+            openFile(data.startingFile)
             setGuideText(parsedHTML);
          }
      } catch (error) {
