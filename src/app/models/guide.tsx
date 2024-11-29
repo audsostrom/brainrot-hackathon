@@ -1,5 +1,15 @@
 import mongoose, { Schema, models } from "mongoose";
 
+export type GuideType = {
+  courseId: string;
+  title: string;
+  description: string;
+  startingFile: string;
+  content: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+};
+
 const guideSchema = new Schema(
   {
     courseId: {

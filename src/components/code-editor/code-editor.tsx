@@ -72,7 +72,7 @@ const CodeMirrorEditor: React.FC<CodeMirrorEditorProps> = ({ value, onChange, la
       }
     }
   }, [value]);
-  return <div ref={editorRef} className={`bg-[#282c34] overflow-y-scroll flex flex-1`} />;
+  return <div ref={editorRef} className={`bg-[#282c34] overflow-y-scroll flex flex-1 border border-secondary`} />;
 };
 
 export default CodeMirrorEditor;

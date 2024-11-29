@@ -1,5 +1,6 @@
 import { WebContainer } from '@webcontainer/api';
 import { useRef, useEffect } from 'react';
+import { ReloadIcon } from "@radix-ui/react-icons"
 
 interface PreviewTerminalProps {
   webContainer: WebContainer | null;
@@ -42,8 +43,12 @@ export default function PreviewTerminal({ webContainer }: PreviewTerminalProps) 
 
    return (
       <div className="w-full h-3/5 bg-white">
+           <div className='flex flex-row bg-primary text-foreground px-3 py-1 items-center justify-center border border-secondary'>
+            <div>Preview</div>
+            <ReloadIcon className='ml-auto'/>
+           </div>
         <iframe
-          className="w-full h-full"
+          className="w-full h-full border border-secondary"
           frameBorder="0"
           id="iframeEl"
           ref={iframeEl}
