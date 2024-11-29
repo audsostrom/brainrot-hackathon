@@ -11,6 +11,7 @@ import Dropdown from '@/components/radix-ui/dropdown';
 import { CaretLeftIcon, CaretRightIcon, CaretSortIcon } from '@radix-ui/react-icons';
 import { GuideType } from '@/app/models/guide';
 import { Skeleton } from '@/components/skeleton/skeleton';
+import { Blockquote, IconButton } from '@radix-ui/themes';
 
 
 
@@ -120,9 +121,9 @@ export default function Guide() {
    }, [courseId, webContainer]);
 
    return (
-      <div className="flex-1 flex flex-row">
+      <div className="flex-1 flex flex-row max-h-[calc(100vh-68px)] overflow-y-hidden">
          {/** Guide side on the left */}
-         <div className="flex-1 w-2/5 overflow-y-auto">
+         <div className="w-2/5">
             <div className='border-b-[1px] border-primary p-2 flex flex-row items-center'>
                <Dropdown
                   label={<CaretSortIcon className='size-8' />}
@@ -130,20 +131,25 @@ export default function Guide() {
                   onSelect={handleSelect}
                />
                <div className='ml-2'>
-                  {currentCourse?.title ? <div className='h-7 text-xl font-bold mb-1'>Course Title</div> : <Skeleton className="w-32 h-7 rounded-full mb-1" />}
+                  {currentCourse?.title ? <div className='h-7 text-xl font-bold mb-1'>{currentCourse.title}</div> : <Skeleton className="w-32 h-7 rounded-full mb-1" />}
                   {currentGuide?.title ? <div className='h-6 text-secondary'>{currentGuide?.title}</div> : <Skeleton className="w-44 h-6 rounded-full" />}
                </div>
 
                <div className='ml-auto flex flex-row'>
+                  <IconButton>
                   <CaretLeftIcon className='size-7' />
+                  </IconButton>
+                  <IconButton>
                   <CaretRightIcon className='size-7' />
+                  </IconButton>
                </div>
 
             </div>
-            <div className='p-4'>
-               <h1 className='text-xl font-bold py-1'>Guide</h1>
-               {currentGuide?.parsedGuideText ? <div dangerouslySetInnerHTML={{ __html: currentGuide?.parsedGuideText }}></div> : <Skeleton className="flex-1 flex rounded-full" />}
-
+            <div className='p-4 h-full overflow-y-auto mb-4'>
+               {currentGuide?.description && <blockquote className="p-4 mt-2 mb-4 border-s-4 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800">
+                  <p className="text-md italic font-medium leading-relaxed text-secondary">{currentGuide.description}</p>
+               </blockquote>}
+               {currentGuide?.parsedGuideText ? <div className='pb-8' dangerouslySetInnerHTML={{ __html: currentGuide?.parsedGuideText }}></div> : <Skeleton className="flex-1 flex rounded-full" />}
             </div>
          </div>
 

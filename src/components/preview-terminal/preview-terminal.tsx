@@ -74,7 +74,6 @@ export default function PreviewTerminal({ webContainer }: PreviewTerminalProps) 
   return (
     <div className="w-full h-3/5 bg-primary">
       <div className="flex flex-row bg-primary text-foreground px-3 py-1 items-center justify-center border border-secondary">
-        <div>Preview</div>
         <ReloadIcon
           ref={reloadIconRef}
           className="ml-auto"
