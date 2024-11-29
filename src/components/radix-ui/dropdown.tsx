@@ -15,7 +15,7 @@ const Dropdown = ({ items, onSelect, label }: DropdownProps) => {
       </DropdownMenu.Trigger>
 
       <DropdownMenu.Content
-        className="w-48 p-2 bg-white border border-gray-300 rounded-lg shadow-lg"
+        className="w-48 p-2 bg-white border border-gray-300 rounded-lg shadow-lg z-10"
         align="start"
       >
         {items.map((item) => (
