@@ -4,14 +4,14 @@ import { useWebContainer } from '@/app/contexts/web-container-context';
 import { convertFilesToTree } from '@/utils/tree';
 import PreviewTerminal from '@/components/preview-terminal/preview-terminal';
 import { WebContainer } from '@webcontainer/api';
-import { useParams } from "next/navigation";
+import { redirect, useParams } from "next/navigation";
 import { transformGuide } from '@/utils/markdown';
 import CodeMirrorEditor, { SupportedLanguage } from '@/components/code-editor/code-editor';
 import Dropdown from '@/components/radix-ui/dropdown';
 import { CaretLeftIcon, CaretRightIcon, CaretSortIcon } from '@radix-ui/react-icons';
 import { GuideType } from '@/app/models/guide';
 import { Skeleton } from '@/components/skeleton/skeleton';
-import { Blockquote, IconButton } from '@radix-ui/themes';
+import { IconButton } from '@radix-ui/themes';
 
 
 
@@ -72,17 +72,14 @@ export default function Guide() {
    useEffect(() => {
       const fetchFiles = async () => {
          try {
-            console.log('hook')
             const response = await fetch(`/api/grab-files?id=${guideId}`);
             const responseJson = await response.json();
             const data: { file: string, content: string }[] = responseJson.response;
             const initFiles = convertFilesToTree(data);
-            console.log(data, initFiles)
             if (!webContainer) {
                const webcontainerInstance: WebContainer = await WebContainer.boot();
                await webcontainerInstance.mount(initFiles);
                setWebContainer(webcontainerInstance);
-               console.log(initFiles)
             } else {
                await webContainer.mount(initFiles);
             }
@@ -99,26 +96,44 @@ export default function Guide() {
       const fetchGuide = async () => {
          try {
             if (webContainer) {
-               console.log('hook')
                const response = await fetch(`/api/grab-guides?id=${courseId}`);
                const responseJson = await response.json();
                const course = responseJson.response;
-               console.log(course, guideId)
                const guide = course.guides.filter((guide: any) => guide._id === guideId)[0];
-               console.log(guide)
-               const parsedHTML = await transformGuide(guide.content)
-               console.log(guide.startingFile)
-               openFile(guide.startingFile);
-               setCurrentCourse(course);
-               setCurrentGuide({ ...guide, parsedGuideText: parsedHTML });
-
+               if (guide) {;
+                  const parsedHTML = await transformGuide(guide.content)
+                  openFile(guide.startingFile);
+                  setCurrentCourse(course);
+                  setCurrentGuide({ ...guide, parsedGuideText: parsedHTML });
+               } else {
+                  console.error("Guide not found!");
+               }
             }
          } catch (error) {
-            console.error('Error fetching gjide:', error);
+            console.error('Error fetching guides:', error);
          }
       };
       fetchGuide();
    }, [courseId, webContainer]);
+
+   const handleNextGuide = () => {
+      if (currentCourse && currentCourse.guides) {
+         const nextIndex = currentCourse.guides.findIndex((guide: any) => guide._id === guideId) + 1;
+         if (nextIndex < currentCourse.guides.length) {
+            redirect(`/guide/${courseId}/${currentCourse.guides[nextIndex]._id}`)
+         }
+      }
+   };
+
+   // Navigate to the previous guide
+   const handlePrevGuide = () => {
+      if (currentCourse && currentCourse.guides) {
+         const prevIndex = currentCourse.guides.findIndex((guide: any) => guide._id === guideId) - 1;
+         if (prevIndex >= 0) {
+            redirect(`/guide/${courseId}/${currentCourse.guides[prevIndex]._id}`)
+         }
+      }
+   };
 
    return (
       <div className="flex-1 flex flex-row max-h-[calc(100vh-68px)] overflow-y-hidden">
@@ -136,10 +151,10 @@ export default function Guide() {
                </div>
 
                <div className='ml-auto flex flex-row'>
-                  <IconButton>
+                  <IconButton onClick={handlePrevGuide}>
                   <CaretLeftIcon className='size-7' />
                   </IconButton>
-                  <IconButton>
+                  <IconButton onClick={handleNextGuide}>
                   <CaretRightIcon className='size-7' />
                   </IconButton>
                </div>
