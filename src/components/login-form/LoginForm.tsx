@@ -1,10 +1,10 @@
 'use client';
 
 import Form from "next/form";
-import {login} from "@/app/login/actions";
 import {useActionState} from "react";
 import {useFormStatus} from "react-dom";
 import Alert from "@/components/alert/Alert";
+import {login} from "@/lib/actions";
 
 const initialState = {
 	errors: [],

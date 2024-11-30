@@ -1,6 +1,12 @@
 import Link from "next/link";
+import {auth} from "@/app/auth";
+import SignOut from "@/components/sign-out/SignOut";
 
-export default function Navbar() {
+export default async function Navbar() {
+    const session = await auth();
+
+    console.log(session?.user);
+
     return (
         <nav
             className="bg-white dark:bg-gray-900 w-full">
@@ -10,12 +16,16 @@ export default function Navbar() {
                         className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Audrey&#39;s Property</span>
                 </Link>
                 <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-                    <Link href={'/login'}>
-                        <button type="button"
-                                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            Login
-                        </button>
-                    </Link>
+                    {session?.user ? (
+                        <SignOut />
+                        ) : (
+                        <Link href={'/login'}>
+                            <button type="button"
+                                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                Login
+                            </button>
+                        </Link>
+                    )}
                     <button data-collapse-toggle="navbar-sticky" type="button"
                             className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                             aria-controls="navbar-sticky" aria-expanded="false">

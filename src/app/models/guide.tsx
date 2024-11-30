@@ -36,5 +36,5 @@ const guideSchema = new Schema(
   { timestamps: true }
 );
 
-const Guide = models.Guide || mongoose.model("Guide", guideSchema);
+const Guide = models?.Guide || mongoose.model("Guide", guideSchema);
 export default Guide;

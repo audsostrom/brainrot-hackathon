@@ -1,6 +1,6 @@
 import Credentials from 'next-auth/providers/credentials';
 import { getUser } from './db';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { authConfig } from './auth.config';
 import NextAuth from 'next-auth';
 
@@ -9,20 +9,27 @@ import NextAuth from 'next-auth';
  * during the current session
  */
 export const {
-	handlers: {GET, POST},
 	auth,
+	handlers,
 	signIn,
 	signOut,
 } = NextAuth({
 	...authConfig,
 	providers: [
 		Credentials({
-			async authorize({ email, password }: any) {
+			name: 'credentials',
+			credentials: {
+				email: { label: 'email', type: 'text' },
+				password: { label: 'password', type: 'password' },
+			},
+			async authorize(credentials) {
+				const { email, password } = credentials;
+
 				try {
-					const user = await getUser(email);
+					const user = await getUser(email as string);
 					if (!user) return null;
 					const passwordsMatch = await bcrypt.compare(
-						password, user['password']
+						password as string, user['password']
 					);
 					if (passwordsMatch) {
 						return {

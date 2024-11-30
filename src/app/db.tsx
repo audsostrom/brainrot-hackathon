@@ -1,6 +1,6 @@
 import User from './models/user';
-import { NextResponse } from 'next/server';
-import bcrypt from 'bcrypt';
+import {NextResponse} from 'next/server';
+import bcrypt from 'bcryptjs';
 import mongoose from 'mongoose';
 import Guide from './models/guide';
 import Course from './models/course';
@@ -68,8 +68,7 @@ export async function getUser(email: string) {
 			{email},
 			{email: 1, password: 1}
 		);
-		const returnVal = user === null ? null : user;
-		return returnVal;
+		return user === null ? null : user;
 	} catch (error) {
 		return NextResponse.json(
 			{message: 'An error occurred while getting the user.'},
@@ -144,14 +143,12 @@ export async function getCoursesWithGuides() {
     await connectMongoDB();
 
     const courses = await Course.find(); // Fetch all courses
-    const coursesWithGuides = await Promise.all(
-      courses.map(async (course) => {
-        const guides = await Guide.find({ _id: { $in: course.guideIds } });
-        return { ...course.toObject(), guides };
-      })
-    );
-
-    return coursesWithGuides;
+	  return await Promise.all(
+		courses.map(async (course) => {
+			const guides = await Guide.find({_id: {$in: course.guideIds}});
+			return {...course.toObject(), guides};
+		})
+	);
   } catch (error) {
     console.error('Error fetching courses with guides:', error);
     throw error;
@@ -184,8 +181,7 @@ export async function getGuide(id: string) {
 		await connectMongoDB();
 		// findOne() gives one document that matches the criteria
 		const guide = await Guide.findById(id)
-		const returnVal = guide === null ? null : guide;
-		return returnVal;
+		return guide === null ? null : guide;
 	} catch (error) {
 		return NextResponse.json(
 			{message: 'An error occurred while getting the user.'},

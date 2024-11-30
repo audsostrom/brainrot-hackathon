@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { createFile, getCoursesWithGuides } from "../db";
-import { auth } from "../auth";
 
 interface Guide {
 	_id: string;
@@ -24,29 +23,30 @@ interface Guide {
 
 /** Dashboard where people click on guides */
 export default async function Dashboard() {
-	const courses: CourseWithGuides[] = await getCoursesWithGuides();
-	console.log(courses);
 	const session = await auth();
 	console.log(session);
+	const courses: CourseWithGuides[] = await getCoursesWithGuides();
+	console.log(courses);
 	return (
-			<div>
-			  <h1>Courses</h1>
-			  <ul>
-				 {courses.map((course) => (
+		<div>
+			<h1>Courses</h1>
+			<p>Hello</p>
+			<ul>
+				{courses.map((course) => (
 					<li key={course._id}>
-					  <h2>{course.title}</h2>
-					  <ul>
-						 {course.guides.map((guide) => (
-							<li key={guide._id}>
-								<Link href={`guide/${course._id}/${guide._id}`}>
-									<strong>{guide.title}</strong>
-								</Link>
-							</li>
-						 ))}
-					  </ul>
+						<h2>{course.title}</h2>
+						<ul>
+							{course.guides.map((guide) => (
+								<li key={guide._id}>
+									<Link href={`/guide/${course._id}/${guide._id}`}>
+										<strong>{guide.title}</strong>
+									</Link>
+								</li>
+							))}
+						</ul>
 					</li>
-				 ))}
-			  </ul>
-			</div>
+				))}
+			</ul>
+		</div>
 	);
 }
