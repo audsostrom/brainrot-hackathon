@@ -11,7 +11,7 @@ interface PreviewTerminalProps {
 export default function PreviewTerminal({ webContainer }: PreviewTerminalProps) {
   const iframeEl = useRef<HTMLIFrameElement | null>(null);
   const reloadIconRef = useRef<SVGSVGElement | null>(null); // Ref for the ReloadIcon
-  
+
 
   useEffect(() => {
     const startDevServer = async () => {
@@ -20,16 +20,15 @@ export default function PreviewTerminal({ webContainer }: PreviewTerminalProps) 
         const installExitCode = await installProcess.exit;
 
         if (installExitCode !== 0) {
-          throw new Error('Unable to run npm install');
+          // `npm run dev`
+          await webContainer.spawn('npm', ['run', 'dev']);
+          webContainer.on('server-ready', (port, url) => {
+            if (iframeEl.current) {
+              iframeEl.current.src = url;
+            }
+          });
         }
 
-        // `npm run dev`
-        await webContainer.spawn('npm', ['run', 'dev']);
-        webContainer.on('server-ready', (port, url) => {
-          if (iframeEl.current) {
-            iframeEl.current.src = url;
-          }
-        });
       }
     };
 
@@ -54,30 +53,31 @@ export default function PreviewTerminal({ webContainer }: PreviewTerminalProps) 
   };
 
   const reloadWebContainerPreview = async () => {
-   if (reloadIconRef.current) {
-     reloadIconRef.current.style.color = 'gray'; // Set icon color to gray during reload
-     reloadIconRef.current.style.pointerEvents = 'none'; // Disable icon interaction during reload
-   }
+    if (reloadIconRef.current) {
+      reloadIconRef.current.style.color = 'gray'; // Set icon color to gray during reload
+      reloadIconRef.current.style.pointerEvents = 'none'; // Disable icon interaction during reload
+    }
 
 
-   // Use WebContainers API's reloadPreview method to reload the iframe
-   if (iframeEl.current) {
-     try {
-       // Reload the iframe
-       reloadPreview(iframeEl.current, 5000); // Optionally provide a timeout (e.g., 5000 ms)
-     } catch (error) {
-       console.error('Error reloading preview:', error);
-     }
-   }
- };
+    // Use WebContainers API's reloadPreview method to reload the iframe
+    if (iframeEl.current) {
+      try {
+        // Reload the iframe
+        reloadPreview(iframeEl.current, 5000); // Optionally provide a timeout (e.g., 5000 ms)
+      } catch (error) {
+        console.error('Error reloading preview:', error);
+      }
+    }
+  };
 
   return (
-    <div className="w-full h-3/5 bg-primary">
+    <div className="w-full h-[calc(100vh-68px-300px)] bg-primary">
       <div className="flex flex-row bg-primary text-foreground px-3 py-1 items-center justify-center border border-secondary">
         <ReloadIcon
           ref={reloadIconRef}
           className="ml-auto"
-          style={{color: 'gray', // Initially grayed out
+          style={{
+            color: 'gray', // Initially grayed out
           }}
           onClick={reloadWebContainerPreview} // Trigger reloadPreview when clicked
         />

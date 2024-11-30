@@ -32,11 +32,7 @@ export const {
 						password as string, user['password']
 					);
 					if (passwordsMatch) {
-						return {
-							// name: 
-							email: email,
-							id: user['id'],
-						};
+						return user;
 					} else {
 						return null;
 					}

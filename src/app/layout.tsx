@@ -3,7 +3,6 @@ import localFont from "next/font/local";
 import { WebContainerProvider } from "./contexts/web-container-context";
 import "./globals.css";
 import Navbar from "@/components/navbar/Navbar";
-import Footer from "@/components/footer/Footer";
 import { Inter } from 'next/font/google';
 
 
@@ -20,16 +19,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-      <html lang="en">
-                        <body
-          className={`${inter.className} antialiased min-h-screen flex flex-col`}
+    <html lang="en">
+      <body
+        className={`${inter.className} antialiased min-h-screen flex flex-col`}
       >
         <WebContainerProvider>
-        <Navbar />
-        <div className={'flex-1 h-full flex flex-col'}>
-        {children}
-        </div>
-    </WebContainerProvider>
+          <Navbar />
+          <div className={'flex-1 h-full flex flex-col'}>
+            {children}
+          </div>
+        </WebContainerProvider>
 
       </body>
     </html>

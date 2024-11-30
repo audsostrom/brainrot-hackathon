@@ -13,7 +13,7 @@ export interface AlertProps {
 
 export default function Alert({type, children}: AlertProps) {
     const enumType = AlertType[type as keyof typeof AlertType] ?? AlertType.INFO;
-    console.log(enumType);
+    // console.log(enumType);
 
     const alertClasses = {
         [AlertType.DANGER]: 'text-red-800 border-red-300 bg-red-50 dark:text-red-400 dark:border-red-800',

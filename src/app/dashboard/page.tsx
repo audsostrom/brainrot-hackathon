@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createFile, getCoursesWithGuides } from "../db";
+import { auth } from "../auth";
 
 interface Guide {
 	_id: string;
@@ -24,13 +25,10 @@ interface Guide {
 /** Dashboard where people click on guides */
 export default async function Dashboard() {
 	const session = await auth();
-	console.log(session);
 	const courses: CourseWithGuides[] = await getCoursesWithGuides();
-	console.log(courses);
 	return (
 		<div>
 			<h1>Courses</h1>
-			<p>Hello</p>
 			<ul>
 				{courses.map((course) => (
 					<li key={course._id}>

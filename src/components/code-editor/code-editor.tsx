@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import { EditorView, basicSetup } from 'codemirror';
 import { EditorState } from '@codemirror/state';
 import { javascript } from '@codemirror/lang-javascript';
@@ -7,16 +7,21 @@ import { css } from '@codemirror/lang-css';
 import { oneDark } from '@codemirror/theme-one-dark';
 import { autocompletion } from '@codemirror/autocomplete';
 import { markdown } from '@codemirror/lang-markdown';
+import { Directory } from './directory';
+import { FileSystemTree } from '@webcontainer/api';
 
 export type SupportedLanguage = 'javascript' | 'html' | 'css' | 'markdown';
 
 interface CodeMirrorEditorProps {
   value: string;
   onChange: (value: string) => void;
+  files: FileSystemTree | null;
+  currentFile: { file: string; type: SupportedLanguage;} | null;
+  setCurrentFile: Dispatch<SetStateAction<{ file: string; type: SupportedLanguage;} | null>>
   language: SupportedLanguage; // relevant docs https://codemirror.net/examples/lang-package/
 }
 
-const CodeMirrorEditor: React.FC<CodeMirrorEditorProps> = ({ value, onChange, language }) => {
+const CodeMirrorEditor: React.FC<CodeMirrorEditorProps> = ({ value, onChange, files, language, currentFile, setCurrentFile}) => {
   const editorRef = useRef<HTMLDivElement>(null);
   const editorViewRef = useRef<EditorView | null>(null);
 
@@ -72,7 +77,12 @@ const CodeMirrorEditor: React.FC<CodeMirrorEditorProps> = ({ value, onChange, la
       }
     }
   }, [value]);
-  return <div ref={editorRef} className={`bg-[#282c34] overflow-y-scroll flex flex-1 border border-secondary`} />;
+
+  return (
+    <div className='border border-secondary flex flex-row flex flex-1 h-[300px]'>
+      <Directory files={files} setCurrentFile={setCurrentFile} currentFile={currentFile}/>
+      <div ref={editorRef} className={`bg-[#282c34] overflow-y-scroll w-full h-full`} />
+    </div>);
 };
 
 export default CodeMirrorEditor;

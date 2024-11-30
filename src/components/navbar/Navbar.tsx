@@ -5,8 +5,6 @@ import SignOut from "@/components/sign-out/SignOut";
 export default async function Navbar() {
     const session = await auth();
 
-    console.log(session?.user);
-
     return (
         <nav
             className="bg-white dark:bg-gray-900 w-full">

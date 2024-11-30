@@ -160,7 +160,6 @@ export async function getCourseData(courseId: string) {
 	try {
 	  await connectMongoDB();
 	  const course = await Course.findById(courseId) // Fetch all courses
-	  console.log(course)
 	  if (!course) {
       throw new Error(`Course with ID ${courseId} not found`);
     }
