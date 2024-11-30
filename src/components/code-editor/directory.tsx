@@ -76,7 +76,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({ name, node, currentFile, setCurrent
         className={`pl-4 text-sm cursor-pointer ${
           currentFile?.file === fullPath ? 'text-blue-500 font-semibold' : 'text-gray-700'
         }`}
-        onClick={() => setCurrentFile({ file: fullPath, type: parseLanguage(name) })}
+        onClick={() => setCurrentFile({ file: fullPath, type: parseLanguage(name.split('.').pop() || 'unknown') })}
       >
         {name} {/* Display only the filename */}
       </li>
