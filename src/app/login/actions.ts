@@ -38,8 +38,6 @@ export async function login(prevState: any, formData: FormData) {
         return null;
     })
 
-    console.log('user', user)
-
     if (user) {
         redirect('/dashboard');
     } else {
