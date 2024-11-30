@@ -3,7 +3,7 @@ import {LoginForm} from "@/components/login-form/LoginForm";
 
 export default function Login() {
 	return (
-		<div className={'flex flex-col gap-3 items-center'}>
+		<div className={'flex flex-col gap-3 items-center justify-center h-[calc(100vh-68px)]'}>
 			<LoginForm />
 
 			<div className="inline-flex items-center justify-center w-full">

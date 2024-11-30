@@ -155,6 +155,25 @@ export async function getCoursesWithGuides() {
   }
 }
 
+/** Used in guide page */
+export async function getCourseData(courseId: string) {
+	try {
+	  await connectMongoDB();
+	  const course = await Course.findById(courseId) // Fetch all courses
+	  if (!course) {
+      throw new Error(`Course with ID ${courseId} not found`);
+    }
+	  const guides = await Guide.find({ _id: { $in: course.guideIds } });
+
+    // Attach the guides as a new property
+    const courseWithGuides = { ...course.toObject(), guides };
+ 
+	  return courseWithGuides;
+	} catch (error) {
+	  console.error('Error fetching courses with guides:', error);
+	  throw error;
+	}
+ }
 
 export async function getGuide(id: string) {
 	try {
