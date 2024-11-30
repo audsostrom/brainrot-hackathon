@@ -23,5 +23,5 @@ const userGuideSchema = new Schema(
   { timestamps: true }
 );
 
-const UserGuide = models.UserGuide || mongoose.model("UserGuide", userGuideSchema);
+const UserGuide = models?.UserGuide || mongoose.model("UserGuide", userGuideSchema);
 export default UserGuide;

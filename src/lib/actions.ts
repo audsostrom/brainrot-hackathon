@@ -1,8 +1,12 @@
 'use server';
 
+import {signOut, signIn} from "@/app/auth";
 import { redirect } from 'next/navigation'
 import {z} from "zod";
-import {signIn} from "@/app/auth";
+
+export async function logout() {
+    await signOut({redirect: true, redirectTo: '/'});
+}
 
 const schema = z.object({
     email: z.string({
@@ -37,8 +41,6 @@ export async function login(prevState: any, formData: FormData) {
         console.log(e);
         return null;
     })
-
-    console.log('user', user)
 
     if (user) {
         redirect('/dashboard');

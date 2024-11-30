@@ -27,5 +27,5 @@ const userFileSchema = new Schema(
   { timestamps: true }
 );
 
-const UserFile = models.File || mongoose.model("UserFile", userFileSchema);
+const UserFile = models?.File || mongoose.model("UserFile", userFileSchema);
 export default UserFile;
