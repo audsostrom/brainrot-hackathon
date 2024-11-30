@@ -26,6 +26,7 @@ export const connectMongoDB = async () => {
  * @param {String} email -  Email address of the user that is being registered.
  * @param {String} password - Password that the user provides when registering.
  * This password is hashed with bcrypt before being stored for security.
+ * @param name
  * @return {NextResponse} – Represents the operation's success (201 or 500).
  */
 export async function createUser(email: string, password: string, name: string) {
@@ -66,7 +67,6 @@ export async function getUser(email: string) {
 		// findOne() gives one document that matches the criteria
 		const user = await User.findOne(
 			{email},
-			{email: 1, password: 1}
 		);
 		return user === null ? null : user;
 	} catch (error) {

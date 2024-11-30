@@ -11,5 +11,16 @@ export const authConfig = {
     authorized({ auth, request: { nextUrl } }) {
       return !!auth?.user;
       },
+    async jwt({ token, account, profile }) {
+      return token;
+    },
+    async session({ session, token, user }) {
+      // Adds the ID to the session
+      if (token.sub != null) {
+        session.user.id = token.sub;
+      }
+
+      return session
+    }
   },
 } satisfies NextAuthConfig;

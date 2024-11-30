@@ -4,6 +4,9 @@ import { WebContainerProvider } from "./contexts/web-container-context";
 import "./globals.css";
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
+import "@radix-ui/themes/styles.css";
+import {Theme} from "@radix-ui/themes";
+
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -32,11 +35,11 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
     <WebContainerProvider>
-        <Navbar />
-        <div className={'flex-1 px-6 py-5 mt-10'}>
+        <Theme>
+            <Navbar />
             {children}
-        </div>
-        <Footer />
+            <Footer />
+        </Theme>
     </WebContainerProvider>
       </body>
     </html>
