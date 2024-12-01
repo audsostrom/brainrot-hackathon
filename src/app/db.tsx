@@ -1,3 +1,5 @@
+'use server';
+
 import User from './models/user';
 import {NextResponse} from 'next/server';
 import bcrypt from 'bcryptjs';
@@ -5,6 +7,7 @@ import mongoose from 'mongoose';
 import Guide from './models/guide';
 import Course from './models/course';
 import File from './models/file';
+import {ObjectId} from "mongodb";
 
 
 /**
@@ -26,6 +29,7 @@ export const connectMongoDB = async () => {
  * @param {String} email -  Email address of the user that is being registered.
  * @param {String} password - Password that the user provides when registering.
  * This password is hashed with bcrypt before being stored for security.
+ * @param name
  * @return {NextResponse} – Represents the operation's success (201 or 500).
  */
 export async function createUser(email: string, password: string, name: string) {
@@ -66,7 +70,6 @@ export async function getUser(email: string) {
 		// findOne() gives one document that matches the criteria
 		const user = await User.findOne(
 			{email},
-			{email: 1, password: 1}
 		);
 		return user === null ? null : user;
 	} catch (error) {
@@ -137,18 +140,56 @@ export async function getGuideFiles(guideId: string) {
 	}
 }
 
+export async function getCoursesWithAuthorMeta() {
+	try {
+		await connectMongoDB();
+		const courses = await Course.find();
+		return await Promise.all(
+			courses.map(async (course) => {
+				const authorFull = await User.findById(new ObjectId(course.authorId));
+				const {password: _, ...author} = authorFull.toObject();
+				return {...course.toObject(), author};
+			})
+		);
+	} catch (error) {
+		console.error('Error fetching guides:', error);
+	throw error;
+	}
+}
+
 /** Used in dashboard */
-export async function getCoursesWithGuides() {
+export async function getCourseWithGuides(courseId: string) {
   try {
     await connectMongoDB();
 
-    const courses = await Course.find(); // Fetch all courses
-	  return await Promise.all(
-		courses.map(async (course) => {
-			const guides = await Guide.find({_id: {$in: course.guideIds}});
-			return {...course.toObject(), guides};
-		})
-	);
+    const courseRaw = await Course.findById(new ObjectId(courseId));
+
+	if (!courseRaw) {
+		return null;
+	}
+
+	const authorRaw = await User.findById(new ObjectId(courseRaw.authorId), { password: 0 });
+	const author = authorRaw?.toObject();
+	author._id = authorRaw?._id.toString();
+
+	const course = courseRaw.toObject();
+	course._id = courseRaw._id.toString();
+
+	const guides = [];
+	for (const guideId of courseRaw.guideIds) {
+		const guideRaw = await Guide.findById(new ObjectId(guideId), { content: 0 });
+		const guide = guideRaw?.toObject();
+		guide._id = guideRaw?._id.toString();
+		if (guide) {
+			guides.push(guide);
+		}
+	}
+
+	return {
+		...course,
+		guides,
+		author,
+	};
   } catch (error) {
     console.error('Error fetching courses with guides:', error);
     throw error;

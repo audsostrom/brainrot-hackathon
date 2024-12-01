@@ -28,10 +28,12 @@ export const {
 				try {
 					const user = await getUser(email as string);
 					if (!user) return null;
+
 					const passwordsMatch = await bcrypt.compare(
 						password as string, user['password']
 					);
 					if (passwordsMatch) {
+						console.log('User found and password matched', user);
 						return user;
 					} else {
 						return null;

@@ -6,6 +6,10 @@ const courseSchema = new Schema(
       type: [String], // ordering matters
       required: true,
     },
+      authorId: {
+          type: String,
+          required: true,
+      },
     title: {
       type: String,
       required: true,
@@ -14,6 +18,10 @@ const courseSchema = new Schema(
       type: String,
       required: true,
     },
+      thumbnail: {
+        type: String,
+        required: true,
+      },
   },
   { timestamps: true }
 );
