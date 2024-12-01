@@ -1,4 +1,4 @@
-import {getCoursesWithAuthorMeta} from "../db";
+import {createUserGuide, getCoursesWithAuthorMeta} from "../db";
 import {Avatar, Box, Card, Container, Flex, Heading, Inset, Link, Text} from "@radix-ui/themes";
 import Image from "next/image";
 import { auth } from "../auth";

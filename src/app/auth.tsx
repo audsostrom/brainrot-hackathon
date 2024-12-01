@@ -33,7 +33,6 @@ export const {
 						password as string, user['password']
 					);
 					if (passwordsMatch) {
-						console.log('User found and password matched', user);
 						return user;
 					} else {
 						return null;

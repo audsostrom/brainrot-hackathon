@@ -7,30 +7,18 @@ const userGuideSchema = new Schema(
       type: String,
       required: true,
     },
-    guideId: {
-      type: String,
-      required: true,
-    },
     userId: {
       type: String,
       required: true,
     },
     completed: {
-      type: Boolean,
+      type: Array, // array of guide ids that match to a boolean
       required: true,
     },
-    files: [
-      {
-        fileName: {
-          type: String,
-          required: true,
-        },
-        fileContent: {
-          type: String,
-          required: true,
-        },
-      },
-    ],
+    files: {
+      type: Array,
+      required: true,
+    },
   },
   { timestamps: true }
 );

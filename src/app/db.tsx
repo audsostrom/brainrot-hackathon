@@ -218,6 +218,22 @@ export async function getCourseData(courseId: string) {
 	}
  }
 
+ /** Used in guide page */
+export async function getCourse(courseId: string) {
+	console.log('courseId', courseId);
+	try {
+	  await connectMongoDB();
+	  const course = await Course.findById(new ObjectId(courseId)) // Fetch all courses
+	  if (!course) {
+      throw new Error(`Course with ID ${courseId} not found`);
+    }
+	  return course;
+	} catch (error) {
+	  console.error('Error fetching courses with guides:', error);
+	  throw error;
+	}
+ }
+
 export async function getGuide(id: string) {
 	console.log('getGuide id', id);
 	try {
@@ -233,32 +249,24 @@ export async function getGuide(id: string) {
 	}
 }
 
+export async function getUserGuide(userId: string, courseId: string) {
+	try {
+		await connectMongoDB();
+		// findOne() gives one document that matches the criteria
+		const guide = await UserGuide.find({ userId: userId, courseId: courseId });
+		return guide[0] ?? null;
+	} catch (error) {
+		return null;
+	}
+}
+
 
 /** Lowkey this just is here to make some random guides */
-export async function createUserGuide() {
+export async function createUserGuide(userGuide: any) {
 	try {
 		await connectMongoDB();
 		// Create Dummy Guides
-		await UserGuide.create({
-			courseId: '', // Random 8-character string
-			guideId: '',
-			userId: '',
-			completed: false, // Random boolean
-			files: [
-			  {
-				 fileName: '',
-				 fileContent: '', // Random 50-character content
-			  },
-			  {
-				 fileName: ``,
-				 fileContent: '', // Random 100-character content
-			  },
-			],
-		 });
-		return NextResponse.json(
-			{message: 'User registered.'},
-			{status: 201}
-		);
+		const hey = await UserGuide.create(userGuide);
 	} catch (error) {
 		return NextResponse.json(
 			{message: 'An error occurred while registering the user.'},
@@ -266,3 +274,16 @@ export async function createUserGuide() {
 		);
 	}
 }
+
+
+export async function updateUserGuide(userId: string, guideId: string, updatedFiles: { fileName: string; fileContent: string }[]) {
+	try {
+		await connectMongoDB();
+		await UserGuide.updateOne(
+			{userId: userId, guideId: guideId},
+			{$set: {files: updatedFiles}}
+		);
+	} catch (error) {
+		console.error('Error updating user guides', error);
+	}
+ }

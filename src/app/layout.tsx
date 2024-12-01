@@ -25,7 +25,7 @@ export default function RootLayout({
         className={`${inter.className} antialiased min-h-screen flex flex-col bg-background text-foreground`}
       >
         <WebContainerProvider>
-          <Theme>
+          <Theme appearance="dark">
             <Navbar />
             {children}
           </Theme>

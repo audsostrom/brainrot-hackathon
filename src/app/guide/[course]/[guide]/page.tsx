@@ -57,10 +57,9 @@ export default function Guide() {
   useEffect(() => {
     const fetchFiles = async () => {
       try {
-        const response = await fetch(`/api/grab-files?id=${guideId}`);
+        const response = await fetch(`/api/grab-files?courseId=${courseId}&guideId=${guideId}`);
         const responseJson = await response.json();
-        console.log(responseJson.response)
-        const data: { file: string; content: string }[] = responseJson.response;
+        const data: { file: string; content: string }[] = responseJson.files;
         const initFiles = convertFilesToTree(data);
 
         if (!webContainer) {
@@ -111,21 +110,49 @@ export default function Guide() {
 
   // Call openFile whenever currentFile changes
   useEffect(() => {
-      console.log(currentFile)
     if (currentFile?.file) {
       openFile(currentFile.file);
     }
   }, [currentFile]);
 
-  const handleNextGuide = () => {
+  const handleNextGuide = async () => {
     if (currentCourse && currentCourse.guides) {
       const nextIndex = currentCourse.guides.findIndex((guide: any) => guide._id === guideId) + 1;
+  
+
       if (nextIndex < currentCourse.guides.length) {
-        // updating the appropriate user guide here - make sure to take the latest version of whatever file is used here
-        redirect(`/guide/${courseId}/${currentCourse.guides[nextIndex]._id}`);
+        try {
+          // Read files from `filesToTrack`
+          const filesToTrack = currentGuide?.filesToTrack; // Assuming this is part of the current guide
+          if (filesToTrack && webContainer) {
+            const updatedFiles: { fileName: string; fileContent: string }[] = await Promise.all(
+              filesToTrack.map(async (filePath: string) => {
+                const content = await webContainer.fs.readFile(filePath, 'utf-8');
+                return { fileName: filePath, fileContent: content };
+              })
+            );
+  
+            // Update the user guide in the backend
+            await fetch(`/api/update-user-guide`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                courseId,
+                updatedFiles,
+              }),
+            });
+          }
+  
+          console.log('after post')
+          // Redirect to the next guide
+          redirect(`/guide/${courseId}/${currentCourse.guides[nextIndex]._id}`);
+        } catch (error) {
+          console.error('Error updating user guide:', error);
+        }
       }
     }
   };
+  
 
   const handlePrevGuide = () => {
     if (currentCourse && currentCourse.guides) {
@@ -189,7 +216,7 @@ export default function Guide() {
 
           {currentGuide?.parsedGuideText && (
             <>
-               <div className="pb-8" dangerouslySetInnerHTML={{ __html: currentGuide?.parsedGuideText }}></div>
+               <div className="parsed-text pb-8" dangerouslySetInnerHTML={{ __html: currentGuide?.parsedGuideText }}></div>
                <div className='h-7 text-xl font-bold mb-1'>Checklist&nbsp;&nbsp;&#x2705;</div>
                <hr></hr>
             </>

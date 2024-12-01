@@ -48,8 +48,26 @@ pre[class*=language-] {
   }
 }
 
+.cm-editor {
+  font-size: 0.8rem;
+}
+
 p, ul, ol {
   @apply text-sm my-1;
+}
+
+.parsed-text {
+  p {
+    margin: 8px 0;
+  }
+  ul {
+    list-style: initial; /* Ensure default list styling is allowed */
+    margin-left: 12px;
+
+  }
+  img {
+    margin: 12px 0;
+  }
 }
 
 h2 {
