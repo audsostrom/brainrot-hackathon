@@ -12,7 +12,5 @@ export const parseLanguage = (fileType: string): SupportedLanguage => {
       js: 'javascript',
       ts: "javascript",
    };
-
-   console.log(fileType.toLowerCase())
    return languageMap[fileType.toLowerCase()] || 'markdown';
 };
