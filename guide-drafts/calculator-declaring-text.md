@@ -15,4 +15,3 @@ Understanding the purpose of each tag is essential for structuring pages effecti
 * etc, etc, etc...
 
 There's a lot more tags out there you can [check out](https://developer.mozilla.org/en-US/docs/Web/HTML/Element) for yourself. However, this list provided will suffice for this guide.
-

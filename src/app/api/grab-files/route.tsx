@@ -50,5 +50,7 @@ export async function GET(req: Request) {
     ...baseFileContents.filter((content) => content !== null),
   ];
 
+  console.log('why', fileContents)
+
   return Response.json({ response: fileContents});
 }
