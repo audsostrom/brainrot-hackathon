@@ -1,11 +1,3 @@
-Declaring Components -> You declare the calculator component
-Declaring Text + Basic HTML elements
-Tailwind Styling
-Flexbox styling
-HTML forms
-Writing TypeScript functions
-Using State variables + Client versus Server Rendering
-
 Flexbox, or the Flexible Box Layout, is a CSS layout model designed to create flexible and efficient layouts. It helps in aligning and distributing space among items in a container, even when their sizes are dynamic.
 
 ## Key Flexbox Concepts
@@ -97,3 +89,5 @@ export default function Calculator() {
    );
 }
 ```
+
+Everything is starting to come together now visually! Now in the next steps, we're going to refine the *functionality* of our calculator.
