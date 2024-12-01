@@ -1,6 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { getGuideFiles } from "@/app/db";
+import { getGuideFiles, getUserGuide, createUserGuide, getCourse } from "@/app/db";
+import { auth } from '@/app/auth';
 
 const baseProjectFiles = [
   'app/globals.css',
@@ -16,41 +17,88 @@ const baseProjectFiles = [
 ];
 
 export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url);
-  const guideId = searchParams.get('id');
-  const listOfFiles: Set<string> = new Set();
+  try {
+    const { searchParams } = new URL(req.url);
+    const courseId = searchParams.get('courseId');
+    const guideId = searchParams.get('guideId');
 
-  const guideFiles = await getGuideFiles(guideId ?? '');
-  const guideFileContents = guideFiles.map((guide) => {
-    listOfFiles.add(guide.name);
-    return { file: guide.name, content: guide.content };
-  });
 
-  const baseFileContents = await Promise.all(
-    baseProjectFiles.map(async (filePath) => {
-      if (!listOfFiles.has(filePath)) {
-        try {
-          const fileContent = await fs.readFile(
-            path.join(process.cwd(), 'public', 'guides', 'base', filePath),
-            'utf8'
-          );
-          return { file: filePath, content: fileContent };
-        } catch (error) {
-          console.error(`Error reading file ${filePath}:`, error);
+    if (!courseId || !guideId) {
+      return new Response("Missing courseId or guideId", { status: 400 });
+    }
+
+    const session = await auth();
+    const userId = session?.user?.id;
+    if (!userId) {
+      return new Response("Unauthorized", { status: 401 });
+    }
+
+    // Check if user guide exists
+    let course = await getCourse(courseId)
+    let userGuide = await getUserGuide(userId, courseId);
+
+    let userFiles: { file: string; content: string;}[] = [];
+    if (userGuide) {
+      userFiles = userGuide.files.map((file: { fileName: string; fileContent: string; }) => ({
+        file: file.fileName,
+        content: file.fileContent
+      }));
+    } else {
+      // No user guide found, create one with files from getGuideFiles
+      const guideFiles = await getGuideFiles(guideId);
+      userFiles = guideFiles.map(guide => ({
+        file: guide.name,
+        content: guide.content
+      }));
+
+      console.log('course', course);
+      const completedArray = course.guideIds.reduce((map: { [x: string]: boolean; }, guideId: string) => {
+        map[guideId] = false; // Initialize all guideId as incomplete (false)
+        return map;
+      }, {});
+
+      // Create new UserGuide
+      await createUserGuide({
+        courseId,
+        userId,
+        completed: completedArray,
+        files: userFiles.map(file => ({
+          fileName: file.file,
+          fileContent: file.content
+        })),
+      });
+    }
+
+    const listOfFiles = new Set(userFiles.map((file) => file.file));
+
+    // Add base files not in user guide
+    const baseFileContents = await Promise.all(
+      baseProjectFiles.map(async (filePath) => {
+        if (!listOfFiles.has(filePath)) {
+          try {
+            const fileContent = await fs.readFile(
+              path.join(process.cwd(), 'public', 'guides', 'base', filePath),
+              'utf8'
+            );
+            return { file: filePath, content: fileContent };
+          } catch (error) {
+            console.error(`Error reading file ${filePath}:`, error);
+            return null;
+          }
+        } else {
           return null;
         }
-      } else {
-        return null;
-      }
-    })
-  );
+      })
+    );
 
-  const fileContents = [
-    ...guideFileContents,
-    ...baseFileContents.filter((content) => content !== null),
-  ];
+    const fileContents = [
+      ...userFiles,
+      ...baseFileContents.filter((content) => content !== null),
+    ];
 
-  console.log('why', fileContents)
-
-  return Response.json({ response: fileContents});
+    return Response.json({ files: fileContents, completed: userGuide ? userGuide.completed : false });
+  } catch (error) {
+    console.error("Error in GET endpoint:", error);
+    return new Response("Internal Server Error", { status: 500 });
+  }
 }

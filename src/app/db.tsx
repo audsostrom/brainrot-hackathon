@@ -8,6 +8,7 @@ import Guide from './models/guide';
 import Course from './models/course';
 import File from './models/file';
 import {ObjectId} from "mongodb";
+import UserGuide from './models/user-guide';
 
 
 /**
@@ -198,7 +199,6 @@ export async function getCourseWithGuides(courseId: string) {
 
 /** Used in guide page */
 export async function getCourseData(courseId: string) {
-	console.log('courseId', courseId);
 	try {
 	  await connectMongoDB();
 	  const course = await Course.findById(new ObjectId(courseId)) // Fetch all courses
@@ -211,6 +211,22 @@ export async function getCourseData(courseId: string) {
     const courseWithGuides = { ...course.toObject(), guides };
  
 	  return courseWithGuides;
+	} catch (error) {
+	  console.error('Error fetching courses with guides:', error);
+	  throw error;
+	}
+ }
+
+ /** Used in guide page */
+export async function getCourse(courseId: string) {
+	console.log('courseId', courseId);
+	try {
+	  await connectMongoDB();
+	  const course = await Course.findById(new ObjectId(courseId)) // Fetch all courses
+	  if (!course) {
+      throw new Error(`Course with ID ${courseId} not found`);
+    }
+	  return course;
 	} catch (error) {
 	  console.error('Error fetching courses with guides:', error);
 	  throw error;
@@ -231,3 +247,42 @@ export async function getGuide(id: string) {
 		);
 	}
 }
+
+export async function getUserGuide(userId: string, courseId: string) {
+	try {
+		await connectMongoDB();
+		// findOne() gives one document that matches the criteria
+		const guide = await UserGuide.find({ userId: userId, courseId: courseId });
+		return guide[0] ?? null;
+	} catch (error) {
+		return null;
+	}
+}
+
+
+/** Lowkey this just is here to make some random guides */
+export async function createUserGuide(userGuide: any) {
+	try {
+		await connectMongoDB();
+		// Create Dummy Guides
+		const hey = await UserGuide.create(userGuide);
+	} catch (error) {
+		return NextResponse.json(
+			{message: 'An error occurred while registering the user.'},
+			{status: 500}
+		);
+	}
+}
+
+
+export async function updateUserGuide(userId: string, courseId: string, updatedFiles: { fileName: string; fileContent: string }[]) {
+	try {
+		await connectMongoDB();
+		await UserGuide.updateOne(
+			{userId: userId, courseId: courseId},
+			{$set: {files: updatedFiles}}
+		);
+	} catch (error) {
+		console.error('Error updating user guides', error);
+	}
+ }

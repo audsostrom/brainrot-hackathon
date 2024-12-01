@@ -5,7 +5,7 @@ import Navbar from "@/components/navbar/Navbar";
 import { ThemeProvider } from "next-themes";
 import "@radix-ui/themes/styles.css";
 import { Inter } from 'next/font/google';
-import {Theme} from "@radix-ui/themes";
+import { Theme } from "@radix-ui/themes";
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -36,3 +36,4 @@ export default function RootLayout({
         </html>
     );
 }
+

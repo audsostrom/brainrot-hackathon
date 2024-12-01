@@ -6,6 +6,8 @@ export type GuideType = {
   description: string;
   startingFile: string;
   content: string;
+  filesToTrack: string[];
+  image?: string;
   createdAt?: Date;
   updatedAt?: Date;
 };
@@ -28,7 +30,15 @@ const guideSchema = new Schema(
       type: String,
       required: true,
     },
+    filesToTrack: {
+      type: Array,
+      required: true,
+    },
     content: { // in markdown format
+      type: String,
+      required: true,
+    },
+    checklist: { // in markdown format
       type: String,
       required: true,
     },

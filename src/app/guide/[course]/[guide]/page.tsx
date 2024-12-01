@@ -16,6 +16,9 @@ import { parseLanguage } from '@/utils/language';
 import Image from 'next/image';
 
 export default function Guide() {
+  /** from the course id and guide id to fetch the appropriate user guide.
+   * grab-files won't change - if a user guide exists, the files on that are going to take higher precedence
+   */
   const { webContainer, setWebContainer } = useWebContainer();
   const [files, setFiles] = useState<FileSystemTree | null>(null);
   const [currentCourse, setCurrentCourse] = useState<any>(null);
@@ -29,11 +32,11 @@ export default function Guide() {
   const guideId = params.guide;
   const courseId = params.course;
 
-  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  // state for tracking files
 
-  const handleSelect = (item: string) => {
-    setSelectedItem(item);
-    console.log('Selected item:', item);
+  const handleSelectGuide = (item: { name: string; id: string }) => {
+    redirect(`/guide/${courseId}/${item.id}`);
+    return;
   };
 
   const openFile = async (file: string) => {
@@ -54,10 +57,9 @@ export default function Guide() {
   useEffect(() => {
     const fetchFiles = async () => {
       try {
-        const response = await fetch(`/api/grab-files?id=${guideId}`);
+        const response = await fetch(`/api/grab-files?courseId=${courseId}&guideId=${guideId}`);
         const responseJson = await response.json();
-        console.log(responseJson.response)
-        const data: { file: string; content: string }[] = responseJson.response;
+        const data: { file: string; content: string }[] = responseJson.files;
         const initFiles = convertFilesToTree(data);
 
         if (!webContainer) {
@@ -108,20 +110,49 @@ export default function Guide() {
 
   // Call openFile whenever currentFile changes
   useEffect(() => {
-      console.log(currentFile)
     if (currentFile?.file) {
       openFile(currentFile.file);
     }
   }, [currentFile]);
 
-  const handleNextGuide = () => {
+  const handleNextGuide = async () => {
     if (currentCourse && currentCourse.guides) {
       const nextIndex = currentCourse.guides.findIndex((guide: any) => guide._id === guideId) + 1;
+  
+
       if (nextIndex < currentCourse.guides.length) {
+        try {
+          // Read files from `filesToTrack`
+          const filesToTrack = currentGuide?.filesToTrack; // Assuming this is part of the current guide
+          if (filesToTrack && webContainer) {
+            const updatedFiles: { fileName: string; fileContent: string }[] = await Promise.all(
+              filesToTrack.map(async (filePath: string) => {
+                const content = await webContainer.fs.readFile(filePath, 'utf-8');
+                return { fileName: filePath, fileContent: content };
+              })
+            );
+  
+            // Update the user guide in the backend
+            await fetch(`/api/update-user-guide`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                courseId,
+                updatedFiles,
+              }),
+            });
+          }
+  
+          console.log('after post')
+          // Redirect to the next guide
+        } catch (error) {
+          console.error('Error updating user guide:', error);
+        }
         redirect(`/guide/${courseId}/${currentCourse.guides[nextIndex]._id}`);
       }
     }
   };
+  
 
   const handlePrevGuide = () => {
     if (currentCourse && currentCourse.guides) {
@@ -136,10 +167,13 @@ export default function Guide() {
     <div className="flex-1 flex flex-row max-h-[calc(100vh-68px)] overflow-y-hidden">
       <div className="w-1/3">
         <div className="border-b-[1px] border-primary p-2 flex flex-row items-center">
-          <Dropdown
+        <Dropdown
             label={<CaretSortIcon className="size-8" />}
-            items={['Option 1', 'Option 2', 'Option 3']}
-            onSelect={handleSelect}
+            items={currentCourse?.guides.map((guide: any) => ({
+              name: guide.title,
+              id: guide._id,
+            })) ?? []}
+            onSelect={handleSelectGuide}
           />
           <div className="ml-2">
             {currentCourse?.title ? (
@@ -153,16 +187,16 @@ export default function Guide() {
               <Skeleton className="w-44 h-6 rounded-full" />
             )}
           </div>
-          <div className="ml-auto flex flex-row">
-            <IconButton onClick={handlePrevGuide}>
+          <div className="ml-auto flex flex-row gap-1">
+            <IconButton className='bg-transparent' onClick={handlePrevGuide}>
               <CaretLeftIcon className="size-7" />
             </IconButton>
-            <IconButton onClick={handleNextGuide}>
+            <IconButton className='bg-transparent' onClick={handleNextGuide}>
               <CaretRightIcon className="size-7" />
             </IconButton>
           </div>
         </div>
-        <div className="p-4 h-[calc(100vh-68px-73px)] overflow-y-auto mb-4">
+        <div className="p-4 h-[calc(100vh-68px-73px)] overflow-y-auto mb-4 flex flex-col">
           {currentGuide?.description && (
             <blockquote className="p-4 mt-2 mb-4 border-s-4 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800">
               <p className="text-md italic font-medium leading-relaxed text-secondary">
@@ -170,15 +204,19 @@ export default function Guide() {
               </p>
             </blockquote>
           )}
-          <Image
-      src="https://chumley.barstoolsports.com/union/2024/11/20/dc884-17262004042678.06fe99d7.webp?fit=bounds&format=pjpg&auto=webp&quality=85%2C75"
-      alt="Image description"
-      width={500} // Specify width
-      height={500} // Specify height
-    />
+          {currentGuide?.image && (
+               <Image
+               src={currentGuide.image}
+               alt="Image description"
+               width={500} // Specify width
+               height={500} // Specify height
+               className='mb-4 self-center'
+            />
+          )}
+
           {currentGuide?.parsedGuideText && (
             <>
-               <div className="pb-8" dangerouslySetInnerHTML={{ __html: currentGuide?.parsedGuideText }}></div>
+               <div className="parsed-text pb-8" dangerouslySetInnerHTML={{ __html: currentGuide?.parsedGuideText }}></div>
                <div className='h-7 text-xl font-bold mb-1'>Checklist&nbsp;&nbsp;&#x2705;</div>
                <hr></hr>
             </>
