@@ -23,10 +23,28 @@ Let's go ahead and create our own Calculator Component. The file for it has alre
 
 ```ts
 /// file: page.tsx
+import Calculator from './calculator/calculator';
+
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-between">
       This is a test repo
+    </div>
+  );
+}
+```
+
+To use components, you must *always* import them into the component/file you want to use them. From there, you can declare an instance of that component like you would any other HTML tag by referring to it by its tag name. Its tag name is determined by the component's function name.
+
+```ts
+/// file: page.tsx
+import Calculator from './calculator/calculator';
+
+export default function Home() {
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-between">
+      {/** see "export default function Calculator() { ... }" in app/components/calculator.tsx */}
+      <Calculator/>
     </div>
   );
 }

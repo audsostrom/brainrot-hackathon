@@ -6,6 +6,7 @@ export type GuideType = {
   description: string;
   startingFile: string;
   content: string;
+  image?: string;
   createdAt?: Date;
   updatedAt?: Date;
 };

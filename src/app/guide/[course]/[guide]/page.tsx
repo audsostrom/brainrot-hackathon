@@ -162,7 +162,7 @@ export default function Guide() {
             </IconButton>
           </div>
         </div>
-        <div className="p-4 h-[calc(100vh-68px-73px)] overflow-y-auto mb-4">
+        <div className="p-4 h-[calc(100vh-68px-73px)] overflow-y-auto mb-4 flex flex-col">
           {currentGuide?.description && (
             <blockquote className="p-4 mt-2 mb-4 border-s-4 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800">
               <p className="text-md italic font-medium leading-relaxed text-secondary">
@@ -170,13 +170,16 @@ export default function Guide() {
               </p>
             </blockquote>
           )}
-          <Image
-      src="https://chumley.barstoolsports.com/union/2024/11/20/dc884-17262004042678.06fe99d7.webp?fit=bounds&format=pjpg&auto=webp&quality=85%2C75"
-      alt="Image description"
-      width={500} // Specify width
-      height={500} // Specify height
-      className='mb-4'
-    />
+          {currentGuide?.image && (
+               <Image
+               src={currentGuide.image}
+               alt="Image description"
+               width={500} // Specify width
+               height={500} // Specify height
+               className='mb-4 self-center'
+            />
+          )}
+
           {currentGuide?.parsedGuideText && (
             <>
                <div className="pb-8" dangerouslySetInnerHTML={{ __html: currentGuide?.parsedGuideText }}></div>
