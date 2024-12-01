@@ -108,7 +108,6 @@ export default function Guide() {
 
   // Call openFile whenever currentFile changes
   useEffect(() => {
-      console.log(currentFile)
     if (currentFile?.file) {
       openFile(currentFile.file);
     }
@@ -166,7 +165,7 @@ export default function Guide() {
           {currentGuide?.description && (
             <blockquote className="p-4 mt-2 mb-4 border-s-4 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800">
               <p className="text-md italic font-medium leading-relaxed text-secondary">
-                {currentGuide.description}
+              {currentGuide.description}
               </p>
             </blockquote>
           )}

@@ -163,6 +163,7 @@ export async function getCourseData(courseId: string) {
 	  if (!course) {
       throw new Error(`Course with ID ${courseId} not found`);
     }
+	  console.log(course)
 	  const guides = await Guide.find({ _id: { $in: course.guideIds } });
 
     // Attach the guides as a new property
