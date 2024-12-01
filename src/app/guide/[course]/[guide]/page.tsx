@@ -187,11 +187,11 @@ export default function Guide() {
               <Skeleton className="w-44 h-6 rounded-full" />
             )}
           </div>
-          <div className="ml-auto flex flex-row">
-            <IconButton onClick={handlePrevGuide}>
+          <div className="ml-auto flex flex-row gap-1">
+            <IconButton className='bg-transparent' onClick={handlePrevGuide}>
               <CaretLeftIcon className="size-7" />
             </IconButton>
-            <IconButton onClick={handleNextGuide}>
+            <IconButton className='bg-transparent' onClick={handleNextGuide}>
               <CaretRightIcon className="size-7" />
             </IconButton>
           </div>
