@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import { WebContainerProvider } from "./contexts/web-container-context";
 import "./globals.css";
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
 import "@radix-ui/themes/styles.css";
-import {Theme} from "@radix-ui/themes";
 import { Inter } from 'next/font/google';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -23,15 +21,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className} antialiased min-h-screen flex flex-col`}
+        className={`${inter.className} antialiased min-h-screen flex flex-col bg-background text-foreground`}
       >
-    <WebContainerProvider>
-        <Theme>
+        <WebContainerProvider>
             <Navbar />
             {children}
-            <Footer />
-        </Theme>
-    </WebContainerProvider>
+        </WebContainerProvider>
       </body>
     </html>
   );

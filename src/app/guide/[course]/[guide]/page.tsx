@@ -31,9 +31,9 @@ export default function Guide() {
 
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
-  const handleSelect = (item: string) => {
-    setSelectedItem(item);
-    console.log('Selected item:', item);
+  const handleSelectGuide = (item: { name: string; id: string }) => {
+    redirect(`/guide/${courseId}/${item.id}`);
+    return;
   };
 
   const openFile = async (file: string) => {
@@ -136,10 +136,13 @@ export default function Guide() {
     <div className="flex-1 flex flex-row max-h-[calc(100vh-68px)] overflow-y-hidden">
       <div className="w-1/3">
         <div className="border-b-[1px] border-primary p-2 flex flex-row items-center">
-          <Dropdown
+        <Dropdown
             label={<CaretSortIcon className="size-8" />}
-            items={['Option 1', 'Option 2', 'Option 3']}
-            onSelect={handleSelect}
+            items={currentCourse?.guides.map((guide: any) => ({
+              name: guide.title,
+              id: guide._id,
+            })) ?? []}
+            onSelect={handleSelectGuide}
           />
           <div className="ml-2">
             {currentCourse?.title ? (
