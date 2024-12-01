@@ -13,7 +13,7 @@ By default, a flex container will have the main axis be horizontal, so there's n
 
 It's important to remember the orientation of your axises to align your content properly. `justify-content` and `align-items` will be your lifeline in assuring flex items are aligned where you'd like them to be regardless of screen size – which is fundamental to *responsive design*. To better illustrate this concept, here's a picture of the different stylings possible with flex containers beyond just `justify-content` and `align-items`.
 
-<img src='https://miro.medium.com/v2/resize:fit:1400/0*YeaUsQyhXSL1TCTH.png'/>
+<img src='/images/flexbox.png'/>
 
 There's a lot to take in with this one. Feel free to read through the documentation on [aligning items](https://developer.mozilla.org/en-US/docs/Web/CSS/align-items) and [justifying content](https://developer.mozilla.org/en-US/docs/Web/CSS/justify-content).
 

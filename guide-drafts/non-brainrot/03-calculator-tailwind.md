@@ -18,7 +18,7 @@ You can take a peek at the `tailwind.config.ts` to see what's there. We only hav
 When Tailwind is installed and configured for your application, it will allow you to apply in-line stylings **through the className prop** like so:
 
 ```ts
-// file: button.tsx
+/// file: button.tsx
 /** An arbitrary component example with some Tailwind styling */
 export default function Button() {
   return (
@@ -33,7 +33,7 @@ export default function Button() {
 ## That's a Lot to Take In...
 Yeah, I'm really sorry this is so yappy. Here's a picture of Fat Brian Family Guy to encourage you to stick with it.
 
-<img src='https://preview.redd.it/new-to-the-subreddit-why-do-people-hate-brian-lol-v0-eald4ne60a3a1.jpg?width=640&crop=smart&auto=webp&s=123113d64d748e78d8e80550bf04697f1b540a9f' width=500 height=500 />
+<img src='/images/fat-brian.webp' width=500 height=500 />
 
 Are you still here? &#129402;
 
@@ -51,7 +51,7 @@ This design heavily employs the usage of background to distinguish elements. Tai
 Let's revisit one of our buttons then. You might have something in your project right now that looks like this:
 
 ```ts
-// file: calculator.tsx
+/// file: calculator.tsx
 /** Omitting extra buttons for clarity */
 export default function Calculator() {
   return (
@@ -65,7 +65,7 @@ export default function Calculator() {
 Let's apply a gray background to this! To match the example image before, we'll use `bg-gray-200` like so:
 
 ```ts
-// file: calculator.tsx
+/// file: calculator.tsx
 /** Omitting extra buttons for clarity */
 export default function Calculator() {
   return (
@@ -83,7 +83,7 @@ All of these correspond to [standard CSS properties](https://developer.mozilla.o
 So now we'll have something that looks more like this:
 
 ```ts
-// file: calculator.tsx
+/// file: calculator.tsx
 /** Omitting extra buttons for clarity */
 export default function Calculator() {
   return (
@@ -99,7 +99,7 @@ To add some nice visual flair, you can even add hover effects which are specifie
 All buttons except the clear and equals button will look the same. If want, you can even create a string variable within your components to make copy and pasting easier:
 
 ```ts
-// file: calculator.tsx
+/// file: calculator.tsx
 /** Omitting extra buttons for clarity */
 export default function Calculator() {
    const btn: string = 'p-2 bg-gray-200 rounded text-center hover:bg-gray-300';

@@ -20,6 +20,7 @@ interface Guide {
     courseId: string;
     description: string;
     title: string;
+    
 }
 
 interface User {
@@ -46,8 +47,6 @@ export default function Course() {
         const fetchCourse = async () => {
             try {
                 const response = await getCourseWithGuides(courseId);
-                console.log('response', response);
-
                 if (!response) {
                     router.push('/404');
                 }
