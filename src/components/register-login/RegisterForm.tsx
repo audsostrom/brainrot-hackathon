@@ -3,8 +3,9 @@
 import { useActionState } from 'react';
 import { useFormStatus} from 'react-dom'
 import Form from "next/form";
-import {register} from "@/app/register/actions";
 import Alert from "@/components/alert/Alert";
+import {register} from "@/lib/actions";
+import {Button} from "@radix-ui/themes";
 
 const initialState = {
     errors: [],
@@ -92,11 +93,12 @@ export default function RegisterForm() {
                 </label>
             </div>
 
-            <button type="submit"
+            <Button type="submit"
                     disabled={pending}
-                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    variant={'solid'}
+            >
                 Register new account
-            </button>
+            </Button>
         </Form>
     );
 
