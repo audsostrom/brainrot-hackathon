@@ -1,7 +1,15 @@
 import type { NextConfig } from 'next';
 
-// mecessary for webcontainers
+// necessary for webcontainers
 const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**', // Allow any hostname
+      },
+    ],
+  },
   async headers() {
     return [
       {

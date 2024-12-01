@@ -19,7 +19,7 @@ export default function PreviewTerminal({ webContainer }: PreviewTerminalProps) 
         const installProcess = await webContainer.spawn('npm', ['install']);
         const installExitCode = await installProcess.exit;
 
-        if (installExitCode !== 0) {
+        if (installExitCode === 0) {
           // `npm run dev`
           await webContainer.spawn('npm', ['run', 'dev']);
           webContainer.on('server-ready', (port, url) => {
