@@ -108,7 +108,7 @@ export default function Course() {
                                     <Text as={'p'} size={'2'} className={'text-slate-500'}>Course {index+1} of {course?.guides.length}</Text>
                                 </Box>
                                 <Button asChild={true}>
-                                    <Link href={`/guide/course/${guide._id}`}>
+                                    <Link href={`/guide/${courseId}/${guide._id}`}>
                                         <Text>Read Guide</Text>
                                     </Link>
                                 </Button>

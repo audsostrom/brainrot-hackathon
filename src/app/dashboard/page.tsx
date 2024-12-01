@@ -1,9 +1,6 @@
 import {getCoursesWithAuthorMeta} from "../db";
-import {auth} from "@/app/auth";
 import {Avatar, Box, Card, Container, Flex, Heading, Inset, Link, Text} from "@radix-ui/themes";
 import Image from "next/image";
-import Link from "next/link";
-import { createFile, getCoursesWithGuides } from "../db";
 import { auth } from "../auth";
 
 interface User {
@@ -101,7 +98,7 @@ export default async function Dashboard() {
 					{premiumCourses.map((course) => (
 						<Box asChild={true} key={course._id}>
 							<Link href={`/course/${course._id}`}>
-								<Card size={'4'} className={'no-underline text-slate-900 	shadow-none transition-shadow duration-300 cursor-pointer hover:shadow-lg hover:shadow-gray-100'}>
+								<Card size={'4'} className={'no-underline text-slate-900 shadow-none transition-shadow duration-300 cursor-pointer hover:shadow-lg hover:shadow-gray-100'}>
 									<Inset clip="padding-box" side="top" >
 										<Image
 											src={`/images/${course.thumbnail}`}
