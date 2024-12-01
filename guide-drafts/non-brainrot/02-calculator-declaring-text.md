@@ -17,26 +17,26 @@ Each HTML element, the building blocks of your web application, is composed of t
 * **The opening tag**: The opening tag marks the start of an HTML element. It consists of the element's name enclosed in angle brackets. Attributes can also be included in the opening tag (more on that later). **The name of the opening tag is often how we'll refer to a specific HTML element**.
 
 ```html
-/// page.tsx
+/// file: page.tsx
 <div className="text-white"> <!-- more on classNames this later -->
 ```
 
 * **Closing Tag**: The closing tag marks the end of the HTML element. It is similar to the opening tag but includes a forward slash `/` before the element name.
 
 ```html
-/// page.tsx
+/// file: page.tsx
 </div>
 ```
 
 * **Props**: Props provide additional information to or about an element. They are included within the opening tag and consist of a name and value pair. There's a lot of *these* out there, but here's a mostly comprehensive [list](https://react.dev/reference/react-dom/components/common#common). The ones you'll probably use most often is `id` and `className` for the purposes of styling.
 
 ```html
-/// page.tsx
+/// file: page.tsx
 <tagname propName="propValue">Content</tagname> <!-- an anonymized example -->
 ```
 
 ```html
-/// page.tsx
+/// file: page.tsx
 <img src="image.jpg" alt="A beautiful landscape"> <!-- some tags have special requirements -->
 ```
 

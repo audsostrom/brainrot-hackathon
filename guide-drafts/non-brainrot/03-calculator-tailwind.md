@@ -18,7 +18,7 @@ You can take a peek at the `tailwind.config.ts` to see what's there. We only hav
 When Tailwind is installed and configured for your application, it will allow you to apply in-line stylings **through the className prop** like so:
 
 ```ts
-// button.tsx
+// file: button.tsx
 /** An arbitrary component example with some Tailwind styling */
 export default function Button() {
   return (
@@ -51,7 +51,7 @@ This design heavily employs the usage of background to distinguish elements. Tai
 Let's revisit one of our buttons then. You might have something in your project right now that looks like this:
 
 ```ts
-// filename: calculator.tsx
+// file: calculator.tsx
 /** Omitting extra buttons for clarity */
 export default function Calculator() {
   return (
@@ -65,7 +65,7 @@ export default function Calculator() {
 Let's apply a gray background to this! To match the example image before, we'll use `bg-gray-200` like so:
 
 ```ts
-// filename: calculator.tsx
+// file: calculator.tsx
 /** Omitting extra buttons for clarity */
 export default function Calculator() {
   return (
@@ -83,7 +83,7 @@ All of these correspond to [standard CSS properties](https://developer.mozilla.o
 So now we'll have something that looks more like this:
 
 ```ts
-// filename: calculator.tsx
+// file: calculator.tsx
 /** Omitting extra buttons for clarity */
 export default function Calculator() {
   return (
@@ -99,7 +99,7 @@ To add some nice visual flair, you can even add hover effects which are specifie
 All buttons except the clear and equals button will look the same. If want, you can even create a string variable within your components to make copy and pasting easier:
 
 ```ts
-// filename: calculator.tsx
+// file: calculator.tsx
 /** Omitting extra buttons for clarity */
 export default function Calculator() {
    const btn: string = 'p-2 bg-gray-200 rounded text-center hover:bg-gray-300';
