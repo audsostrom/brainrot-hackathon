@@ -77,9 +77,7 @@ export default function Course() {
         <>
             {(!loading && course) && (
                 <>
-                <Box className={'py-12'} style={{
-                    backgroundColor: '#f2f5fa',
-                }}>
+                <Box className={'py-12 bg-[#f2f5fa] dark:bg-gray-800'}>
                     <Container>
                         <Heading as={'h1'} size={'8'}>{course.title}</Heading>
                         <Box>

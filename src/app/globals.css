@@ -10,13 +10,11 @@
   --secondary: color(display-p3 0 0.02 0.063/0.62);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0f0f11;
-    --foreground: #ffffff;
-    --primary: #282c34;
-    --secondary: #a39fa9;
-  }
+[data-theme='dark'] :root {
+  --background: #0f0f11;
+  --foreground: #ffffff;
+  --primary: #282c34;
+  --secondary: #a39fa9;
 }
 
 body {

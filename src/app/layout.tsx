@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { WebContainerProvider } from "./contexts/web-container-context";
 import "./globals.css";
 import Navbar from "@/components/navbar/Navbar";
-import Footer from "@/components/footer/Footer";
+import { ThemeProvider } from "next-themes";
 import "@radix-ui/themes/styles.css";
 import { Inter } from 'next/font/google';
 import {Theme} from "@radix-ui/themes";
@@ -20,15 +20,17 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
         <body
             className={`${inter.className} antialiased min-h-screen flex flex-col bg-background text-foreground`}
         >
         <WebContainerProvider>
-            <Theme>
-                <Navbar />
-                {children}
-            </Theme>
+            <ThemeProvider attribute="class">
+                <Theme>
+                    <Navbar />
+                    {children}
+                </Theme>
+            </ThemeProvider>
         </WebContainerProvider>
         </body>
         </html>

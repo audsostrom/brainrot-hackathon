@@ -32,11 +32,11 @@ export default async function Dashboard() {
 		{
 			_id: 'https://www.fbi.gov/',
 			title: 'Succeed in Computer Science',
-			thumbnail: 'diddy.webp',	
+			thumbnail: 'nerd-cover.webp',
 			author: {
-				name: 'Diddler',
+				name: 'UCSD Students',
 				email: 'string',
-				picture: 'diddy-mugshot.jpg',
+				picture: 'nerd.webp',
 			},
 		},
 		{
@@ -93,9 +93,7 @@ export default async function Dashboard() {
 
 	return (
 		<>
-			<Box minWidth={'300px'} as={'div'} width={'100%'} style={{
-				backgroundColor: '#f2f5fa',
-			}}>
+			<Box minWidth={'300px'} as={'div'} className={'bg-[#f2f5fa] dark:bg-gray-800'} width={'100%'}>
 				<Container className={'py-12'}>
 					<Heading as="h1" size={'8'}>Courses</Heading>
 					<Text>Wassup, {session?.user?.name}</Text>
@@ -107,7 +105,7 @@ export default async function Dashboard() {
 					{courses.map((course) => (
 						<Box asChild={true} key={course._id}>
 							<Link href={`/course/${course._id}`}>
-								<Card size={'4'} className={'no-underline text-slate-900 	shadow-none transition-shadow duration-300 cursor-pointer hover:shadow-lg hover:shadow-gray-100'}>
+								<Card size={'4'} className={'no-underline text-slate-900 	shadow-none transition-shadow duration-300 cursor-pointer hover:shadow-lg hover:shadow-gray-100 dark:hover:shadow-gray-800'}>
 									<Inset clip="padding-box" side="top" >
 										<Image
 											src={`/images/${course.thumbnail}`}
@@ -131,10 +129,10 @@ export default async function Dashboard() {
 											className={'border'}
 											radius={'full'}
 										/>
-										<Text size={'2'}>{course.author?.name}</Text>
+										<Text className={'dark:text-slate-50'} size={'2'}>{course.author?.name}</Text>
 									</Flex>
 
-									<Heading as={'h3'} className={'font-bold'}>{course.title}</Heading>
+									<Heading as={'h3'} className={'font-bold dark:text-white'}>{course.title}</Heading>
 
 									<Text as={'p'} className={'mt-20 text-gray-400'}>Course</Text>
 								</Card>
@@ -148,7 +146,7 @@ export default async function Dashboard() {
 					{premiumCourses.map((course) => (
 						<Box minWidth={'300px'} asChild={true} key={course._id}>
 							<Link href={`${course._id}`} target={'_blank'}>
-								<Card size={'4'} className={'no-underline text-slate-900 shadow-none transition-shadow duration-300 cursor-pointer hover:shadow-lg hover:shadow-gray-100'}>
+								<Card size={'4'} className={'dark:hover:shadow-gray-800 no-underline text-slate-900 shadow-none transition-shadow duration-300 cursor-pointer hover:shadow-lg hover:shadow-gray-100'}>
 									<Inset clip="padding-box" side="top" >
 										<Image
 											src={`/images/${course.thumbnail}`}
@@ -172,12 +170,12 @@ export default async function Dashboard() {
 											className={'border'}
 											radius={'full'}
 										/>
-										<Text size={'3'}>{course.author?.name}</Text>
+										<Text className={'dark:text-slate-50'} size={'3'}>{course.author?.name}</Text>
 									</Flex>
 
-									<Heading as={'h3'} className={'font-bold'}>{course.title}</Heading>
+									<Heading as={'h3'} className={'font-bold dark:text-white'}>{course.title}</Heading>
 
-									<Text as={'p'} className={'mt-20 text-gray-400'}>Course</Text>
+									<Text as={'p'} className={'mt-20 text-gray-400 dark:text-slate-100'}>Course</Text>
 								</Card>
 							</Link>
 						</Box>

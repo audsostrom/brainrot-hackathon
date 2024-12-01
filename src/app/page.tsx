@@ -4,7 +4,7 @@
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
 import Link from "next/link"
-import {Button, Container, Grid, Section, Text} from "@radix-ui/themes";
+import {Box, Button, Container, Grid, Section, Text} from "@radix-ui/themes";
 import Image from "next/image";
 
 export default function Page() {
@@ -95,14 +95,14 @@ export default function Page() {
             </Section>
             <Section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800">
                 <Container className="grid items-center justify-center gap-4 px-4 text-center md:px-6">
-                    <div className="space-y-3">
+                    <Box className="space-y-3">
                         <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">
                             Trusted and Backed by America&#39;s Most Trusted Companies
                         </h2>
                         <Text as={'p'} className="mx-auto max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
                             If you can trust them with your personal data, you can trust us with your business.
                         </Text>
-                    </div>
+                    </Box>
                     <Grid columns={'4'}>
                         {logos.map((logo) => (
                             <Image
@@ -110,7 +110,6 @@ export default function Page() {
                                 src={`/images/logos/${logo}-logo.png`}
                                 width="200"
                                 height="100"
-                                layout={'intrinsic'}
                                 alt={logo}
                                 className="mx-auto grayscale opacity-85	"
                                 objectFit={'contain'}
