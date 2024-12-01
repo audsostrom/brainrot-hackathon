@@ -1,6 +1,7 @@
-import { getGuide, getGuideFiles } from "@/app/db";
+import fs from 'fs/promises';
+import path from 'path';
+import { getGuideFiles } from "@/app/db";
 
-// specifies the base project files
 const baseProjectFiles = [
   'app/globals.css',
   'app/layout.tsx',
@@ -17,27 +18,39 @@ const baseProjectFiles = [
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const guideId = searchParams.get('id');
-  const listOfFiles: Set<string> = new Set(); // no dupes
-    const guideFiles = await getGuideFiles(guideId ?? '')
-    const guideFileContents = guideFiles.map((guide) => { 
-      listOfFiles.add(guide.name)
-      return { file: guide.name, content: guide.content} 
-    })
+  const listOfFiles: Set<string> = new Set();
 
-   // brainrot-hackathon/public/guides/base/app/favicon.ico
-   const baseFileContents = await Promise.all(
-      baseProjectFiles.map(async (filePath) => {
-        if (!listOfFiles.has(filePath)) {
-          const url = `http://localhost:3000/guides/base/${filePath}`;
-          const response = await fetch(url);
-          const text = await response.text();
-          return { file: filePath, content: text };
+  const guideFiles = await getGuideFiles(guideId ?? '');
+  const guideFileContents = guideFiles.map((guide) => {
+    listOfFiles.add(guide.name);
+    return { file: guide.name, content: guide.content };
+  });
+
+  const baseFileContents = await Promise.all(
+    baseProjectFiles.map(async (filePath) => {
+      if (!listOfFiles.has(filePath)) {
+        try {
+          const fileContent = await fs.readFile(
+            path.join(process.cwd(), 'public', 'guides', 'base', filePath),
+            'utf8'
+          );
+          return { file: filePath, content: fileContent };
+        } catch (error) {
+          console.error(`Error reading file ${filePath}:`, error);
+          return null;
         }
-      })
-    ).then(results => results.filter(content => content !== null && content !== undefined));
-    
-    const fileContents = [...guideFileContents, ...baseFileContents];
-    // const fileContents = baseFileContents;
+      } else {
+        return null;
+      }
+    })
+  );
 
-	return Response.json({ response: fileContents});
+  const fileContents = [
+    ...guideFileContents,
+    ...baseFileContents.filter((content) => content !== null),
+  ];
+
+  console.log('why', fileContents)
+
+  return Response.json({ response: fileContents});
 }

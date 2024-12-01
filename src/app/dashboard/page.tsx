@@ -2,6 +2,9 @@ import {getCoursesWithAuthorMeta} from "../db";
 import {auth} from "@/app/auth";
 import {Avatar, Box, Card, Container, Flex, Heading, Inset, Link, Text} from "@radix-ui/themes";
 import Image from "next/image";
+import Link from "next/link";
+import { createFile, getCoursesWithGuides } from "../db";
+import { auth } from "../auth";
 
 interface User {
 	_id: string;

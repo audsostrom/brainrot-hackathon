@@ -1,24 +1,14 @@
 import type { NextConfig } from 'next';
 
-// mecessary for webcontainers
+// necessary for webcontainers
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**.tenor.com',
-        port: '',
-        pathname: '',
-        search: '',
+        hostname: '**', // Allow any hostname
       },
-      {
-        protocol: 'https',
-        hostname: 'assets.teenvogue.com',
-        port: '',
-        pathname: '',
-        search: '',
-      },
-    ]
+    ],
   },
   async headers() {
     return [

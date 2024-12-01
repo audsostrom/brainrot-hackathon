@@ -113,11 +113,11 @@ const defaultRenderer: Partial<Renderer> = {
 
       if (match && startLine) {
         html = `<div class="code-block">${
-          options['file'] ? `<span class="filename" data-line="${startLine}">${filename}</span>` : ''
+          options['file'] ? `<span>${filename}</span>` : ''
         }<pre class='language-${plang}'><code>${highlighted}</code></pre></div>`;
       } else {
         html = `<div class="code-block">${
-          options['file'] ? `<span class="filename" data-line="${0}">${filename}</span>` : ''
+          options['file'] ? `<span>${filename}</span>` : ''
         }<pre class='language-${plang}'><code>${highlighted}</code></pre></div>`;
       }
     }
