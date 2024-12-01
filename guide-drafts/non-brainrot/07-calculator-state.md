@@ -27,7 +27,7 @@ With all this in mind then, it makes sense for us to declare our calculator as a
 
 
 ```ts
-/// filename: calculator.tsx
+/// file: calculator.tsx
 'use client';
 import { useState } from 'react';
 
@@ -48,7 +48,7 @@ Let's break down how it works:
 Now that we've done that, we can now track and manage the value of `count` appropriately in response to user interactions.
 
 ```ts
-/// filename: calculator.tsx
+/// file: calculator.tsx
 'use client';
 import { useState } from 'react';
 
@@ -62,7 +62,7 @@ export default function Calculator() {
 Now we can refactor all of our functions accordingly:
 
 ```ts
-/// filename: calculator.tsx
+/// file: calculator.tsx
 export default function Calculator() {
 
    const [count, setCount] = useState('');

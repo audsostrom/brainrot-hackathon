@@ -1,4 +1,4 @@
-import {getCoursesWithAuthorMeta} from "../db";
+import {createUserGuide, getCoursesWithAuthorMeta} from "../db";
 import {auth} from "@/app/auth";
 import {Avatar, Box, Card, Container, Flex, Heading, Inset, Link, Text} from "@radix-ui/themes";
 import Image from "next/image";
@@ -27,6 +27,8 @@ interface User {
 export default async function Dashboard() {
 	const session = await auth();
 	const courses: CourseWithAuthorMeta[] = await getCoursesWithAuthorMeta();
+
+	await createUserGuide()
 
 	const premiumCourses = [
 		{

@@ -33,6 +33,10 @@ const guideSchema = new Schema(
       type: String,
       required: true,
     },
+    checklist: { // in markdown format
+      type: String,
+      required: true,
+    },
     image: {
       type: String,
     },

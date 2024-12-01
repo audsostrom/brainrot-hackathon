@@ -116,7 +116,7 @@ We use the `{}` for variable replacement so the value we assign to the `classNam
 Your job now is to finish styling the remaining buttons in accordance to the design. Additionally make sure you create another div for displaying the result, if you didn't do so in the last step, like so:
 
 ```ts
-/// filename: calculator.tsx
+/// file: calculator.tsx
 /** Feel free to put whatever number as the result for now */
 export default function Calculator() {
    const btn: string = 'p-2 bg-gray-200 rounded text-center hover:bg-gray-300';

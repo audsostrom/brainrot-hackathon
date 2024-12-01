@@ -16,6 +16,9 @@ import { parseLanguage } from '@/utils/language';
 import Image from 'next/image';
 
 export default function Guide() {
+  /** from the course id and guide id to fetch the appropriate user guide.
+   * grab-files won't change - if a user guide exists, the files on that are going to take higher precedence
+   */
   const { webContainer, setWebContainer } = useWebContainer();
   const [files, setFiles] = useState<FileSystemTree | null>(null);
   const [currentCourse, setCurrentCourse] = useState<any>(null);
@@ -29,7 +32,7 @@ export default function Guide() {
   const guideId = params.guide;
   const courseId = params.course;
 
-  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  // state for tracking files
 
   const handleSelectGuide = (item: { name: string; id: string }) => {
     redirect(`/guide/${courseId}/${item.id}`);
@@ -118,6 +121,7 @@ export default function Guide() {
     if (currentCourse && currentCourse.guides) {
       const nextIndex = currentCourse.guides.findIndex((guide: any) => guide._id === guideId) + 1;
       if (nextIndex < currentCourse.guides.length) {
+        // updating the appropriate user guide here - make sure to take the latest version of whatever file is used here
         redirect(`/guide/${courseId}/${currentCourse.guides[nextIndex]._id}`);
       }
     }

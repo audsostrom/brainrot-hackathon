@@ -35,7 +35,7 @@ For us, we definitely want to have functions for handling button click events su
 After outlining the needed functionality above, we definitely will need at least *five* functions if we want our code to be maintainable and easy to debug. Here's outline of what we might need to implement.
 
 ```ts
-/// filename: calculator.tsx
+/// file: calculator.tsx
 /** Some elements ommitted for clarity */
 export default function Calculator() {
 
@@ -72,7 +72,7 @@ You'll notice we're using strings to represent numbers and operations. This is a
 You'll notice that `handleInput` takes in a parameter `e`. This parameter `e` is an Event that is triggered by a change in some element, according to this type. This change, and its value can be obtained by event-binding this function to one of our many numerical buttons like so:
 
 ```ts
-/// filename: calculator.tsx
+/// file: calculator.tsx
 /** Some elements ommitted for clarity */
 export default function Calculator() {
 
@@ -109,7 +109,7 @@ export default function Calculator() {
 The `onClick` property is how Next.js handles [click events](https://developer.mozilla.org/en-US/docs/Web/API/Element/click_event). The value of the input (in the example, "1") gets passed to our `handleInput` function since the value is considered as part of the event, and we can access it like so:
 
 ```ts
-/// filename: calculator.tsx
+/// file: calculator.tsx
 /** Some elements ommitted for clarity */
 export default function Calculator() {
 
@@ -129,7 +129,7 @@ export default function Calculator() {
 Because we're using strings to represent `count`, or the value currently entered into a calculator - we want to be careful on how we handle our variables so our math is done correctly.
 
 ```ts
-/// filename: calculator.tsx
+/// file: calculator.tsx
 /** Some elements ommitted for clarity */
 export default function Calculator() {
 

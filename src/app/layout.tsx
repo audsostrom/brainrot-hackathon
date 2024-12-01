@@ -5,6 +5,7 @@ import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
 import "@radix-ui/themes/styles.css";
 import { Inter } from 'next/font/google';
+import { Theme } from "@radix-ui/themes";
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -24,8 +25,10 @@ export default function RootLayout({
         className={`${inter.className} antialiased min-h-screen flex flex-col bg-background text-foreground`}
       >
         <WebContainerProvider>
+          <Theme>
             <Navbar />
             {children}
+          </Theme>
         </WebContainerProvider>
       </body>
     </html>

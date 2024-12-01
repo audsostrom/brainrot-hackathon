@@ -22,7 +22,7 @@ To apply these CSS properties with Tailwind, you'll use [`items-<alignment>`](ht
 For us, it might be helpful to set the outermost `div` in our Calculator component to be a flex container with `flex` that's vertically-oriented with `flex-col`. We want all of our content to *centered* both vertically and horizontally. Our code will look something like this as a result:
 
 ```ts
-/// filename: calculator.tsx
+/// file: calculator.tsx
 export default function Calculator() {
 
    ...
@@ -48,7 +48,7 @@ Flexbox is greating for aligning content responsively, but don't discount the st
 We'll use `block` styling on the results div for example:
 
 ```ts
-/// filename: calculator.tsx
+/// file: calculator.tsx
 export default function Calculator() {
 
    ...
@@ -68,7 +68,7 @@ Now this div will stetch to take up as much horizontal space as possible!
 Additionally, a grid layout will make sense for our operation and numerical buttons. If we analyze the design of our calculator, you notice there's four columns with a bit of a gap in between. Let's add then the following divs around those buttons.
 
 ```ts
-/// filename: calculator.tsx
+/// file: calculator.tsx
 /** Some elements ommitted for clarity */
 export default function Calculator() {
 

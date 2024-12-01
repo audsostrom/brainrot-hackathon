@@ -21,7 +21,7 @@ One of the most commonly used HTML elements is `<form>`. It has a well-defined u
 You might've had something like this before:
 
 ```ts
-/// filename: calculator.tsx
+/// file: calculator.tsx
 /** Some elements ommitted for clarity */
 export default function Calculator() {
 
@@ -45,7 +45,7 @@ export default function Calculator() {
 Update this to now be the following:
 
 ```ts
-/// filename: calculator.tsx
+/// file: calculator.tsx
 /** Some elements ommitted for clarity */
 export default function Calculator() {
 
@@ -74,7 +74,7 @@ Next, let's focus on refactoring a buttons to reflect their intended semantic me
 ... to this:
 
 ```ts
-/// filename: calculator.tsx
+/// file: calculator.tsx
 /** Some elements ommitted for clarity */
 export default function Calculator() {
 
@@ -107,7 +107,7 @@ The various supported input types can be found [here](https://developer.mozilla.
 Do this process for the rest of your numerical and operational buttons. As for the div which is currently displaying some static number, we're going to refactor that as well to be an `<input>` tag:
 
 ```ts
-/// filename: calculator.tsx
+/// file: calculator.tsx
 /** Some elements ommitted for clarity */
 export default function Calculator() {
 
