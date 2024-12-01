@@ -10,13 +10,11 @@
   --secondary: color(display-p3 0 0.02 0.063/0.62);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0f0f11;
-    --foreground: #ffffff;
-    --primary: #282c34;
-    --secondary: #a39fa9;
-  }
+[data-theme='dark'] :root {
+  --background: #0f0f11;
+  --foreground: #ffffff;
+  --primary: #282c34;
+  --secondary: #a39fa9;
 }
 
 body {
@@ -26,7 +24,7 @@ body {
 
 code {
   font-family: 'DM Mono', monospace; /* Apply DM Mono to all code elements */
-  @apply px-1 py-0.5 mx-0.5 bg-primary text-sm rounded text-foreground;
+  @apply px-1 py-0.5 mx-0.5 bg-primary dark:bg-gray-800 text-sm rounded text-foreground dark:text-amber-50;
 }
 
 .code-block {
@@ -39,19 +37,18 @@ code {
 }
 
 pre[class*=language-] {
-  @apply bg-primary shadow-inner w-full p-2.5 m-0 text-sm overflow-x-auto;
+  @apply bg-primary dark:bg-black shadow-inner w-full p-2.5 m-0 text-sm overflow-x-auto;
   margin-top: 0;
   font-family: 'DM Mono', monospace; /* Apply DM Mono to all pre elements */
 
   code {
-    @apply p-0 m-0 bg-transparent;
+    @apply p-0 m-0 bg-transparent text-black dark:text-white;
   }
 }
 
 .cm-editor {
   font-size: 0.8rem;
 }
-
 p, ul, ol {
   @apply text-sm my-1;
 }
