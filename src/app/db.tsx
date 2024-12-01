@@ -199,9 +199,10 @@ export async function getCourseWithGuides(courseId: string) {
 
 /** Used in guide page */
 export async function getCourseData(courseId: string) {
+	console.log('courseId', courseId);
 	try {
 	  await connectMongoDB();
-	  const course = await Course.findById(courseId) // Fetch all courses
+	  const course = await Course.findById(new ObjectId(courseId)) // Fetch all courses
 	  if (!course) {
       throw new Error(`Course with ID ${courseId} not found`);
     }
@@ -218,10 +219,11 @@ export async function getCourseData(courseId: string) {
  }
 
 export async function getGuide(id: string) {
+	console.log('getGuide id', id);
 	try {
 		await connectMongoDB();
 		// findOne() gives one document that matches the criteria
-		const guide = await Guide.findById(id)
+		const guide = await Guide.findById(new ObjectId(id))
 		return guide === null ? null : guide;
 	} catch (error) {
 		return NextResponse.json(
