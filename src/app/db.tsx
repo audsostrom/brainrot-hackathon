@@ -275,11 +275,11 @@ export async function createUserGuide(userGuide: any) {
 }
 
 
-export async function updateUserGuide(userId: string, guideId: string, updatedFiles: { fileName: string; fileContent: string }[]) {
+export async function updateUserGuide(userId: string, courseId: string, updatedFiles: { fileName: string; fileContent: string }[]) {
 	try {
 		await connectMongoDB();
 		await UserGuide.updateOne(
-			{userId: userId, guideId: guideId},
+			{userId: userId, courseId: courseId},
 			{$set: {files: updatedFiles}}
 		);
 	} catch (error) {

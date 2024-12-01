@@ -145,10 +145,10 @@ export default function Guide() {
   
           console.log('after post')
           // Redirect to the next guide
-          redirect(`/guide/${courseId}/${currentCourse.guides[nextIndex]._id}`);
         } catch (error) {
           console.error('Error updating user guide:', error);
         }
+        redirect(`/guide/${courseId}/${currentCourse.guides[nextIndex]._id}`);
       }
     }
   };
