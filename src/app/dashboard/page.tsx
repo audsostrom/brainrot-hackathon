@@ -31,8 +31,8 @@ export default async function Dashboard() {
 	const premiumCourses = [
 		{
 			_id: 'https://www.fbi.gov/',
-			title: 'Diddy\'s Party',
-			thumbnail: 'diddy.webp',
+			title: 'Succeed in Computer Science',
+			thumbnail: 'diddy.webp',	
 			author: {
 				name: 'Diddler',
 				email: 'string',

@@ -21,6 +21,7 @@ export default auth((req) => {
   console.log('isAuthenticated', isAuthenticated);
 
   // Too many redirects
+  // Make them go to the
   // if (isPublicRoute && isAuthenticated)
   //   return Response.redirect(new URL(DEFAULT_REDIRECT, nextUrl));
 
