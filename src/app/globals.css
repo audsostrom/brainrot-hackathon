@@ -1,7 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 
 :root {
   --background: #ffffff;
@@ -22,4 +22,36 @@
 body {
   color: var(--foreground);
   background: var(--background);
+}
+
+code {
+  font-family: 'DM Mono', monospace; /* Apply DM Mono to all code elements */
+  @apply px-1 py-0.5 mx-0.5 bg-primary text-sm rounded text-foreground;
+}
+
+.code-block {
+  font-family: 'DM Mono', monospace; /* Apply DM Mono to all code elements */
+  @apply relative mt-4 border border-gray-500 rounded-b rounded-md;
+
+  .filename {
+    @apply block w-full text-sm text-[#f637e3] border-b border-gray-500 p-2.5 bg-[#0f0f11] cursor-pointer;
+  }
+}
+
+pre[class*=language-] {
+  @apply bg-primary shadow-inner w-full p-2.5 m-0 text-sm overflow-x-auto;
+  margin-top: 0;
+  font-family: 'DM Mono', monospace; /* Apply DM Mono to all pre elements */
+
+  code {
+    @apply p-0 m-0 bg-transparent;
+  }
+}
+
+p, ul, ol {
+  @apply text-sm my-1;
+}
+
+h2 {
+  @apply text-lg my-3 border-b border-gray-500;
 }

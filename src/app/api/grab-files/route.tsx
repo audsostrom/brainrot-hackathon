@@ -16,6 +16,8 @@ const baseProjectFiles = [
 ];
 
 export async function GET(req: Request) {
+  // grab the user guide here, and if doesn't create it and then
+  // add any files that are needed for this guide/course -> to the new thing
   const { searchParams } = new URL(req.url);
   const guideId = searchParams.get('id');
   const listOfFiles: Set<string> = new Set();
@@ -52,5 +54,6 @@ export async function GET(req: Request) {
 
   console.log('why', fileContents)
 
+  // return the user completion status 
   return Response.json({ response: fileContents});
 }

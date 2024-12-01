@@ -8,6 +8,7 @@ import Guide from './models/guide';
 import Course from './models/course';
 import File from './models/file';
 import {ObjectId} from "mongodb";
+import UserGuide from './models/user-guide';
 
 
 /**
@@ -227,6 +228,40 @@ export async function getGuide(id: string) {
 	} catch (error) {
 		return NextResponse.json(
 			{message: 'An error occurred while getting the user.'},
+			{status: 500}
+		);
+	}
+}
+
+
+/** Lowkey this just is here to make some random guides */
+export async function createUserGuide() {
+	try {
+		await connectMongoDB();
+		// Create Dummy Guides
+		await UserGuide.create({
+			courseId: '', // Random 8-character string
+			guideId: '',
+			userId: '',
+			completed: false, // Random boolean
+			files: [
+			  {
+				 fileName: '',
+				 fileContent: '', // Random 50-character content
+			  },
+			  {
+				 fileName: ``,
+				 fileContent: '', // Random 100-character content
+			  },
+			],
+		 });
+		return NextResponse.json(
+			{message: 'User registered.'},
+			{status: 201}
+		);
+	} catch (error) {
+		return NextResponse.json(
+			{message: 'An error occurred while registering the user.'},
 			{status: 500}
 		);
 	}

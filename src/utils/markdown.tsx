@@ -39,10 +39,6 @@ function escapeHtml(html: string): string {
   return html.replace(/[&<>]/g, (c) => chars[c]);
 }
 
-function highlightSpans(content: string, classname: string): string {
-  return `<span class="${classname}">${content}</span>`;
-}
-
 const defaultRenderer: Partial<Renderer> = {
   code(token: Tokens.Code): string {
     let { text, lang = '', escaped } = token;
@@ -111,15 +107,9 @@ const defaultRenderer: Partial<Renderer> = {
         escapeHtml(text);
 
 
-      if (match && startLine) {
         html = `<div class="code-block">${
-          options['file'] ? `<span>${filename}</span>` : ''
+          options['file'] ? `<span class="filename">${filename}</span>` : ''
         }<pre class='language-${plang}'><code>${highlighted}</code></pre></div>`;
-      } else {
-        html = `<div class="code-block">${
-          options['file'] ? `<span>${filename}</span>` : ''
-        }<pre class='language-${plang}'><code>${highlighted}</code></pre></div>`;
-      }
     }
 
     return html

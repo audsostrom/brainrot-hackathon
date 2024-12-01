@@ -8,7 +8,7 @@ const userSchema = new Schema(
     },
     name: {
       type: String,
-        required: true,
+      required: true,
     },
     password: {
       type: String,
@@ -17,7 +17,8 @@ const userSchema = new Schema(
     picture: {
       type: String,
       required: false
-    }  },
+    }
+  },
   { timestamps: true }
 );
 

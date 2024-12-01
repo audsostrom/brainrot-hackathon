@@ -19,6 +19,18 @@ const userGuideSchema = new Schema(
       type: Boolean,
       required: true,
     },
+    files: [
+      {
+        fileName: {
+          type: String,
+          required: true,
+        },
+        fileContent: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );

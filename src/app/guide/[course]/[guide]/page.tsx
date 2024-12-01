@@ -16,6 +16,9 @@ import { parseLanguage } from '@/utils/language';
 import Image from 'next/image';
 
 export default function Guide() {
+  /** from the course id and guide id to fetch the appropriate user guide.
+   * grab-files won't change - if a user guide exists, the files on that are going to take higher precedence
+   */
   const { webContainer, setWebContainer } = useWebContainer();
   const [files, setFiles] = useState<FileSystemTree | null>(null);
   const [currentCourse, setCurrentCourse] = useState<any>(null);
@@ -29,11 +32,11 @@ export default function Guide() {
   const guideId = params.guide;
   const courseId = params.course;
 
-  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  // state for tracking files
 
-  const handleSelect = (item: string) => {
-    setSelectedItem(item);
-    console.log('Selected item:', item);
+  const handleSelectGuide = (item: { name: string; id: string }) => {
+    redirect(`/guide/${courseId}/${item.id}`);
+    return;
   };
 
   const openFile = async (file: string) => {
@@ -118,6 +121,7 @@ export default function Guide() {
     if (currentCourse && currentCourse.guides) {
       const nextIndex = currentCourse.guides.findIndex((guide: any) => guide._id === guideId) + 1;
       if (nextIndex < currentCourse.guides.length) {
+        // updating the appropriate user guide here - make sure to take the latest version of whatever file is used here
         redirect(`/guide/${courseId}/${currentCourse.guides[nextIndex]._id}`);
       }
     }
@@ -136,10 +140,13 @@ export default function Guide() {
     <div className="flex-1 flex flex-row max-h-[calc(100vh-68px)] overflow-y-hidden">
       <div className="w-1/3">
         <div className="border-b-[1px] border-primary p-2 flex flex-row items-center">
-          <Dropdown
+        <Dropdown
             label={<CaretSortIcon className="size-8" />}
-            items={['Option 1', 'Option 2', 'Option 3']}
-            onSelect={handleSelect}
+            items={currentCourse?.guides.map((guide: any) => ({
+              name: guide.title,
+              id: guide._id,
+            })) ?? []}
+            onSelect={handleSelectGuide}
           />
           <div className="ml-2">
             {currentCourse?.title ? (
@@ -162,7 +169,7 @@ export default function Guide() {
             </IconButton>
           </div>
         </div>
-        <div className="p-4 h-[calc(100vh-68px-73px)] overflow-y-auto mb-4">
+        <div className="p-4 h-[calc(100vh-68px-73px)] overflow-y-auto mb-4 flex flex-col">
           {currentGuide?.description && (
             <blockquote className="p-4 mt-2 mb-4 border-s-4 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800">
               <p className="text-md italic font-medium leading-relaxed text-secondary">
@@ -170,12 +177,16 @@ export default function Guide() {
               </p>
             </blockquote>
           )}
-          <Image
-      src="https://chumley.barstoolsports.com/union/2024/11/20/dc884-17262004042678.06fe99d7.webp?fit=bounds&format=pjpg&auto=webp&quality=85%2C75"
-      alt="Image description"
-      width={500} // Specify width
-      height={500} // Specify height
-    />
+          {currentGuide?.image && (
+               <Image
+               src={currentGuide.image}
+               alt="Image description"
+               width={500} // Specify width
+               height={500} // Specify height
+               className='mb-4 self-center'
+            />
+          )}
+
           {currentGuide?.parsedGuideText && (
             <>
                <div className="pb-8" dangerouslySetInnerHTML={{ __html: currentGuide?.parsedGuideText }}></div>
