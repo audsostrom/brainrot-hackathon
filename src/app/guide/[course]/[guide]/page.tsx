@@ -175,6 +175,7 @@ export default function Guide() {
       alt="Image description"
       width={500} // Specify width
       height={500} // Specify height
+      className='mb-4'
     />
           {currentGuide?.parsedGuideText && (
             <>
