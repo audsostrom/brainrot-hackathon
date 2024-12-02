@@ -8,7 +8,7 @@ export const authConfig = {
   },
   providers: [],
   callbacks: {
-    authorized({ auth, request: { nextUrl } }) {
+    authorized({ auth }) {
       return !!auth?.user;
       },
     async session({ session, token }) {

@@ -1,4 +1,4 @@
-import { getCourseData, getGuide } from "@/app/db";
+import { getCourseData } from "@/app/db";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);

@@ -8,7 +8,7 @@ import { authConfig } from '@/app/auth.config';
   // matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)', '/dashboard'],
 // };
 
-import { DEFAULT_REDIRECT, PUBLIC_ROUTES, ROOT } from '@/lib/routes';
+import { PUBLIC_ROUTES, ROOT } from '@/lib/routes';
 
 const { auth } = NextAuth(authConfig);
 

@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useWebContainer } from '@/app/contexts/web-container-context';
 import { convertFilesToTree } from '@/utils/tree';
 import PreviewTerminal from '@/components/preview-terminal/preview-terminal';
@@ -14,7 +14,6 @@ import { Skeleton } from '@/components/skeleton/skeleton';
 import {Box, IconButton} from '@radix-ui/themes';
 import { parseLanguage } from '@/utils/language';
 import Image from 'next/image';
-import { HfInference } from "@huggingface/inference";
 import ConfirmationModal from './guide-modal';
 
 export default function Guide() {
@@ -35,7 +34,7 @@ export default function Guide() {
   const courseId = params.course;
 
   const [isModalOpen, setModalOpen] = useState(false);
-  const [reviewResult, setReviewResult] = useState<string | null>(null);
+  // const [reviewResult, setReviewResult] = useState<string | null>(null);
 
 
   const handleNextGuide = () => {
@@ -53,7 +52,7 @@ export default function Guide() {
 
   const submitForReview = async (): Promise<boolean> => {
     try {
-      const nextGuideId = currentCourse.guides.findIndex((guide: any) => guide._id === guideId) + 1;
+      // const nextGuideId = currentCourse.guides.findIndex((guide: any) => guide._id === guideId) + 1;
       const filesToTrack = currentGuide?.filesToTrack;
       const updatedFiles = filesToTrack
         ? await Promise.all(
@@ -76,13 +75,14 @@ export default function Guide() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           courseId,
+          guideId,
           updatedFiles,
         }),
       });
       const responseJson = await modelResponse.json(); // Expecting JSON response
       // console.log('API Response:', responseJson.response, responseJson.response.includes('No'));
 
-      setReviewResult(responseJson.response || ''); // Assume the API sends a `message` field
+      // setReviewResult(responseJson.response || ''); // Assume the API sends a `message` field
 
       // Check if response indicates success
       if (responseJson.response.includes('No')) {
@@ -91,6 +91,7 @@ export default function Guide() {
         return false;
       }
     } catch (error) {
+      console.log('Error submitting for review:', error);
       return false;
     }
   };
@@ -117,6 +118,7 @@ export default function Guide() {
     await webContainer?.fs.writeFile(currentFile?.file ?? '', fileContent);
   };
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     const fetchFiles = async () => {
       try {

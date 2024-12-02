@@ -1,11 +1,10 @@
-import { auth } from "@/app/auth";
-import { getCourseData, getGuide, updateUserGuide } from "@/app/db";
+// import { auth } from "@/app/auth";
 import { HfInference } from "@huggingface/inference";
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const session = await auth();
+    // const session = await auth();
     const { updatedFiles } = body;
 
     const client = new HfInference(`${process.env.HUGGINGFACE_KEY}`);
