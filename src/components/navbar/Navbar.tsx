@@ -10,7 +10,7 @@ export default async function Navbar() {
 
     return (
         <nav className="dark:bg-gray-900 w-full shadow-md">
-            <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <div className="flex justify-between flex-wrap p-4">
                 <Link href={'/'} className="flex items-center space-x-3 rtl:space-x-reverse">
                     <span className="self-center text-3xl font-bold whitespace-nowrap dark:text-white">
                         Fizz

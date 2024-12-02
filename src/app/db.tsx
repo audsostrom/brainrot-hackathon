@@ -226,7 +226,7 @@ export async function getCourseData(courseId: string) {
 
  /** Used in guide page */
 export async function getCourse(courseId: string) {
-	console.log('courseId', courseId);
+
 	try {
 	  await connectMongoDB();
 	  const course = await Course.findById(new ObjectId(courseId)) // Fetch all courses
@@ -241,7 +241,6 @@ export async function getCourse(courseId: string) {
  }
 
 export async function getGuide(id: string) {
-	console.log('getGuide id', id);
 	try {
 		await connectMongoDB();
 		// findOne() gives one document that matches the criteria
