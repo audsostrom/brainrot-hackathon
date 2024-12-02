@@ -137,7 +137,7 @@ export default function Guide() {
 
         setFiles(initFiles);
       } catch (error) {
-        console.error('Error fetching files:', error);
+        console.error('Page; Error fetching files:', error);
       }
     };
 
@@ -208,7 +208,7 @@ export default function Guide() {
               <Skeleton className="w-32 h-7 rounded-full mb-1" />
             )}
             {currentGuide?.title ? (
-              <div className="h-6 text-secondary">{currentGuide?.title}</div>
+              <div className="h-6 text-secondary dark:text-secondary-dark">{currentGuide?.title}</div>
             ) : (
               <Skeleton className="w-44 h-6 rounded-full" />
             )}

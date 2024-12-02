@@ -16,7 +16,7 @@ export default function Page() {
                 <Container>
                     <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
                         <Image
-                            src="/images/cover.jpg"
+                            src={"/images/cover.jpg"}
                             width="550"
                             height="550"
                             alt="Hero"
