@@ -2,7 +2,7 @@ import Link from "next/link";
 import { auth } from "@/app/auth";
 import SignOut from "@/components/sign-out/SignOut";
 import ThemeButton from "@/components/theme-button/ThemeButton";
-import { Box, Button, Flex } from "@radix-ui/themes";
+import { Button, Flex } from "@radix-ui/themes";
 import { HomeIcon } from "lucide-react";
 
 export default async function Navbar() {
@@ -32,11 +32,6 @@ export default async function Navbar() {
                     ) : (
                         <Link href={'/login'}>
                             <Button>Login</Button>
-                            <button
-                                type="button"
-                                className="text-white bg-[#3e63dd] hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                Login
-                            </button>
                         </Link>
                     )}
                 </Flex>

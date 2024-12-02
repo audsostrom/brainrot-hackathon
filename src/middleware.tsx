@@ -20,10 +20,13 @@ export default auth((req) => {
 
   console.log('isAuthenticated', isAuthenticated);
 
-  // Too many redirects
-  // Make them go to the
-  // if (isPublicRoute && isAuthenticated)
-  //   return Response.redirect(new URL(DEFAULT_REDIRECT, nextUrl));
+  if (nextUrl.pathname === '/' && isAuthenticated) {
+    const url = nextUrl.clone()
+    url.pathname = '/dashboard'
+
+    return Response.redirect(url);
+  }
+
 
   if (!isAuthenticated && !isPublicRoute)
     return Response.redirect(new URL(ROOT, nextUrl));
