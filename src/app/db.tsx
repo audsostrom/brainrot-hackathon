@@ -19,7 +19,7 @@ export const connectMongoDB = async () => {
 	try {
 		await mongoose.connect(process.env.MONGODB_URI ?? '');
 	} catch (error) {
-		console.error('Error connecting to MongoDB: ', error);
+		console.log('Error connecting to MongoDB: ', error);
 	}
 };
 
@@ -48,6 +48,7 @@ export async function createUser(email: string, password: string, name: string) 
 			{status: 201}
 		);
 	} catch (error) {
+		console.log('Error creating user:', error);
 		return NextResponse.json(
 			{message: 'An error occurred while registering the user.'},
 			{status: 500}
@@ -74,6 +75,7 @@ export async function getUser(email: string) {
 		);
 		return user === null ? null : user;
 	} catch (error) {
+		console.log('Error fetching user:', error);
 		return NextResponse.json(
 			{message: 'An error occurred while getting the user.'},
 			{status: 500}
@@ -105,6 +107,7 @@ export async function createGuide() {
 			{status: 201}
 		);
 	} catch (error) {
+		console.log('Error creating guide:', error);
 		return NextResponse.json(
 			{message: 'An error occurred while registering the user.'},
 			{status: 500}
@@ -123,6 +126,7 @@ export async function createFile() {
 			content: 'dsf',
 		});
 	} catch (error) {
+		console.log('Error creating file:', error);
 		return NextResponse.json(
 			{message: 'An error occurred while registering the user.'},
 			{status: 500}
@@ -136,7 +140,7 @@ export async function getGuideFiles(guideId: string) {
 		await connectMongoDB();
 		return await File.find({ guideId: guideId });
 	} catch (error) {
-		console.error('Error fetching guides:', error);
+		console.log('Error fetching guides:', error);
     throw error;
 	}
 }
@@ -148,12 +152,13 @@ export async function getCoursesWithAuthorMeta() {
 		return await Promise.all(
 			courses.map(async (course) => {
 				const authorFull = await User.findById(new ObjectId(course.authorId));
+				// eslint-disable-next-line @typescript-eslint/no-unused-vars
 				const {password: _, ...author} = authorFull.toObject();
 				return {...course.toObject(), author};
 			})
 		);
 	} catch (error) {
-		console.error('Error fetching guides:', error);
+		console.log('Error fetching guides:', error);
 	throw error;
 	}
 }
@@ -199,7 +204,7 @@ export async function getCourseWithGuides(courseId: string, userId: string) {
 		userGuides: userGuideCompleted,
 	};
   } catch (error) {
-    console.error('Error fetching courses with guides:', error);
+    console.log('Error fetching courses with guides:', error);
     throw error;
   }
 }
@@ -219,7 +224,7 @@ export async function getCourseData(courseId: string) {
  
 	  return courseWithGuides;
 	} catch (error) {
-	  console.error('Error fetching courses with guides:', error);
+	  console.log('Error fetching courses with guides:', error);
 	  throw error;
 	}
  }
@@ -235,7 +240,7 @@ export async function getCourse(courseId: string) {
     }
 	  return course;
 	} catch (error) {
-	  console.error('Error fetching courses with guides:', error);
+	  console.log('Error fetching courses with guides:', error);
 	  throw error;
 	}
  }
@@ -248,6 +253,7 @@ export async function getGuide(id: string) {
 		const guide = await Guide.findById(new ObjectId(id))
 		return guide === null ? null : guide;
 	} catch (error) {
+		console.log('Error fetching guide:', error);
 		return NextResponse.json(
 			{message: 'An error occurred while getting the user.'},
 			{status: 500}
@@ -274,6 +280,7 @@ export async function createUserGuide(userGuide: any) {
 		// Create Dummy Guides
 		const hey = await UserGuide.create(userGuide);
 	} catch (error) {
+		console.log('Error creating user guide:', error);
 		return NextResponse.json(
 			{message: 'An error occurred while registering the user.'},
 			{status: 500}
@@ -294,6 +301,6 @@ export async function updateUserGuide(userId: string, courseId: string, complete
 			}}
 		);
 	} catch (error) {
-		console.error('Error updating user guides', error);
+		console.log('Error updating user guides', error);
 	}
  }

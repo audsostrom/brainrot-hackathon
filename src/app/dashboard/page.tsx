@@ -93,44 +93,46 @@ export default async function Dashboard() {
 
 	return (
 		<>
-			<Box minWidth={'300px'} as={'div'} className={'bg-[#f2f5fa] dark:bg-gray-800'} width={'100%'}>
+			<Box minWidth={'300px'} as={'div'} className={'px-6 bg-[#f2f5fa] dark:bg-gray-800'} width={'100%'}>
 				<Container className={'py-12'}>
 					<Heading as="h1" size={'8'}>Courses</Heading>
 					<Text>Wassup, {session?.user?.name}</Text>
 				</Container>
 			</Box>
-			<Container className={'py-12'}>
-			<div>
-    <Heading as={'h2'} className={'mb-8'}>Standard</Heading>
-    <div className=" sm:hidden lg:block absolute right-0">
-        <Image
-            src={`/images/freeminecraft.png`}
-            width="200"
-            height="100"
-            alt="freeminecraft"
-            objectFit="contain"
-        />
-		<Image className="pt-6"
-			src={`/images/freerobux.png`}
-            width="200"
-            height="100"
-            alt="freerobux"
-            objectFit="contain"
-		
-		/>
-		<Image className="pt-6"
-			src={`/images/freegems.webp`}
-            width="200"
-            height="100"
-            alt="freegems"
-            objectFit="contain"
-		
-		/>
-    </div>
-</div>
+			<Container className={'px-6 py-12'}>
+				<div>
+					<Heading as={'h2'} className={'mb-8'}>Standard</Heading>
+					<div className="hidden lg:block absolute right-0">
+						<Image
+							src={`/images/freeminecraft.png`}
+							width="200"
+							height="100"
+							alt="freeminecraft"
+							objectFit="contain"
+						/>
+						<Image className="pt-6"
+							src={`/images/freerobux.png`}
+							width="200"
+							height="100"
+							alt="freerobux"
+							objectFit="contain"
+						/>
+						<Image className="pt-6"
+							src={`/images/freegems.webp`}
+							width="200"
+							height="100"
+							alt="freegems"
+							objectFit="contain"
+						/>
+					</div>
+				</div>
 				
 
-				<Grid columns={'3'} gap={'2'}>
+				<Grid columns={{
+					initial: '1',
+					md: '2',
+					lg: '3',
+				}} gap={'2'}>
 					{courses.map((course) => (
 						<Box asChild={true} key={course._id}>
 							<Link href={`/course/${course._id}`}>
@@ -171,7 +173,11 @@ export default async function Dashboard() {
 				</Grid>
 
 				<Heading as={'h2'} className={'mt-10 mb-8'}>Exclusive Content 🥵🌶️</Heading>
-				<Grid columns={'3'} gap={'3'}>
+				<Grid columns={{
+					initial: '1',
+					md: '2',
+					lg: '3',
+				}} gap={'3'}>
 					{premiumCourses.map((course) => (
 						<Box minWidth={'300px'} asChild={true} key={course._id}>
 							<Link href={`${course._id}`} target={'_blank'}>

@@ -64,9 +64,8 @@ export default function Course() {
                 }
 
                 setCourse(response);
-                console.log('course', response);
             } catch (error) {
-                console.error('Error fetching course:', error);
+                console.log('Error fetching course:', error);
             }
         };
         fetchCourse();
