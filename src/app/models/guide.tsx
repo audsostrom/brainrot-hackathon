@@ -1,10 +1,5 @@
 import mongoose, { Schema, models } from "mongoose";
 
-export interface FilesToTrackType {
-    file: string;
-    content: string;
-}
-
 export type GuideType = {
   courseId: string;
   title: string;

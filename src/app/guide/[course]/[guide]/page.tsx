@@ -9,7 +9,7 @@ import { transformGuide } from '@/utils/markdown';
 import CodeMirrorEditor, { SupportedLanguage } from '@/components/code-editor/code-editor';
 import Dropdown from '@/components/radix-ui/dropdown';
 import { CaretLeftIcon, CaretRightIcon, CaretSortIcon } from '@radix-ui/react-icons';
-import {FilesToTrackType, GuideType} from '@/app/models/guide';
+import {GuideType} from '@/app/models/guide';
 import { Skeleton } from '@/components/skeleton/skeleton';
 import {Box, IconButton} from '@radix-ui/themes';
 import { parseLanguage } from '@/utils/language';
