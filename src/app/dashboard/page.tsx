@@ -30,7 +30,7 @@ export default async function Dashboard() {
 
 	const premiumCourses = [
 		{
-			_id: 'https://www.fbi.gov/',
+			_id: 'https://www.mchire.com/co/McDonalds1220/Job?job_id=PDX_MC_C7A3503E-1323-4A83-8859-53754CA9D645_75403',
 			title: 'Succeed in Computer Science',
 			thumbnail: 'nerd-cover.webp',
 			author: {
@@ -40,7 +40,7 @@ export default async function Dashboard() {
 			},
 		},
 		{
-			_id: 'https://www.lapdonline.org/contact-us/',
+			_id: 'https://en.wikipedia.org/wiki/If_I_Did_It:_Confessions_of_the_Killer',
 			title: 'Getting Away with Murder',
 			thumbnail: 'oj-simp-cover.webp',
 			author: {
@@ -100,7 +100,36 @@ export default async function Dashboard() {
 				</Container>
 			</Box>
 			<Container className={'py-12'}>
-				<Heading as={'h2'} className={'mb-8'}>Standard</Heading>
+			<div>
+    <Heading as={'h2'} className={'mb-8'}>Standard</Heading>
+    <div className=" sm:hidden lg:block absolute right-0">
+        <Image
+            src={`/images/freeminecraft.png`}
+            width="200"
+            height="100"
+            alt="freeminecraft"
+            objectFit="contain"
+        />
+		<Image className="pt-6"
+			src={`/images/freerobux.png`}
+            width="200"
+            height="100"
+            alt="freerobux"
+            objectFit="contain"
+		
+		/>
+		<Image className="pt-6"
+			src={`/images/freegems.webp`}
+            width="200"
+            height="100"
+            alt="freegems"
+            objectFit="contain"
+		
+		/>
+    </div>
+</div>
+				
+
 				<Grid columns={'3'} gap={'2'}>
 					{courses.map((course) => (
 						<Box asChild={true} key={course._id}>
