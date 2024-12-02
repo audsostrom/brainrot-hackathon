@@ -34,8 +34,8 @@ export async function GET(req: Request) {
     }
 
     // Check if user guide exists
-    let course = await getCourse(courseId)
-    let userGuide = await getUserGuide(userId, courseId);
+    const course = await getCourse(courseId)
+    const userGuide = await getUserGuide(userId, courseId);
 
     let userFiles: { file: string; content: string;}[] = [];
     if (userGuide) {

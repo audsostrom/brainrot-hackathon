@@ -1,9 +1,7 @@
 import * as Dialog from '@radix-ui/react-dialog';
-import { Button } from '@radix-ui/themes';
-import { redirect } from 'next/navigation';
 import { useState } from 'react';
 
-export default function ConfirmationModal({ onSubmit, isOpen, onClose, courseId, nextGuideId, handleNextGuide2 }: any) {
+export default function ConfirmationModal({ onSubmit, isOpen, onClose, handleNextGuide2 }: any) {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   let response = false;

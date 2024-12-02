@@ -55,6 +55,7 @@ export default function Course() {
         wait();
     }, [status]);
 
+    /* eslint-disable react-hooks/exhaustive-deps */
     useEffect(() => {
         const fetchCourse = async () => {
             try {

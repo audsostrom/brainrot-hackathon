@@ -26,6 +26,7 @@ const CodeMirrorEditor: React.FC<CodeMirrorEditorProps> = ({ value, onChange, fi
   const editorViewRef = useRef<EditorView | null>(null);
 
   // Initialize the editor once
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     if (!editorRef.current || editorViewRef.current) return;
 
@@ -79,7 +80,7 @@ const CodeMirrorEditor: React.FC<CodeMirrorEditorProps> = ({ value, onChange, fi
   }, [value]);
 
   return (
-    <div className='border border-secondary flex flex-row flex flex-1 h-[300px]'>
+    <div className='border border-secondary flex-row flex flex-1 h-[300px]'>
       <Directory files={files} setCurrentFile={setCurrentFile} currentFile={currentFile}/>
       <div ref={editorRef} className={`bg-[#282c34] overflow-y-scroll w-full h-full`} />
     </div>);

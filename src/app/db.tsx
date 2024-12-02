@@ -267,6 +267,7 @@ export async function getUserGuide(userId: string, courseId: string) {
 		const guide = await UserGuide.find({ userId: userId, courseId: courseId });
 		return guide[0] ?? null;
 	} catch (error) {
+		console.log('Error fetching user guide:', error);
 		return null;
 	}
 }
@@ -277,7 +278,7 @@ export async function createUserGuide(userGuide: any) {
 	try {
 		await connectMongoDB();
 		// Create Dummy Guides
-		const hey = await UserGuide.create(userGuide);
+		await UserGuide.create(userGuide);
 	} catch (error) {
 		console.log('Error creating user guide:', error);
 		return NextResponse.json(

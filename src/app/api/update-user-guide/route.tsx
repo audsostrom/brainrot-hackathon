@@ -1,19 +1,23 @@
 import { auth } from "@/app/auth";
-import { getCourseData, getGuide, updateUserGuide } from "@/app/db";
+import {getUserGuide, updateUserGuide} from "@/app/db";
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
     const session = await auth();
-    const { courseId, updatedFiles } = body;
+    const { courseId, updatedFiles, guideId } = body;
 
-    if (!courseId || !updatedFiles) {
+    if (!courseId || !updatedFiles || !guideId) {
       return new Response(JSON.stringify({ error: "Missing required parameters" }), {
         status: 400,
       });
     }
 
-    const updatedGuide = await updateUserGuide(session?.user?.id ?? '', courseId, updatedFiles);
+    const { completed } = await getUserGuide(session?.user?.id ?? '', courseId);
+    completed[0][guideId] = true;
+    console.log('completed', completed)
+
+    const updatedGuide = await updateUserGuide(session?.user?.id ?? '', courseId, completed, updatedFiles);
     return new Response(JSON.stringify({ response: updatedGuide }), { status: 200 });
   } catch (error) {
     console.error("Error handling POST request:", error);
