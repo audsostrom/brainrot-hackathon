@@ -41,7 +41,8 @@ function escapeHtml(html: string): string {
 
 const defaultRenderer: Partial<Renderer> = {
   code(token: Tokens.Code): string {
-    let { text, lang = '', escaped } = token;
+    // eslint-disable-next-line prefer-const
+    let { text, lang = '' } = token;
     const language = languages[lang as keyof Languages] || lang;
     const options: Record<string, string> = {};
     let html = '';
@@ -86,14 +87,16 @@ const defaultRenderer: Partial<Renderer> = {
         })
         .join('')}</code></pre></div>`;
     } else {
-      let match; let startLine; let endLine;
+      let match;
+      // let startLine;
+      // let endLine;
       let filename = '';
       if (options['file']) {
         match = options['file'].match(/^(.+?)(?: \(L(\d+)(?:-L(\d+))?\))?$/);
         if (match) {
           filename = match[1];
-          startLine = match[2];
-          endLine = match[3] || startLine;
+          // startLine = match[2];
+          // endLine = match[3] || startLine;
         } else {
           filename = options['file'];
         }

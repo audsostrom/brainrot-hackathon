@@ -12,7 +12,7 @@ export default function Page() {
 
     return (
         <main>
-            <Section className="w-full py-12 md:py-24 lg:py-32">
+            <Section className="w-full py-12 md:py-24 lg:py-32 px-6">
                 <Container>
                     <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
                         <Image
@@ -52,7 +52,7 @@ export default function Page() {
                     </div>
                 </Container>
             </Section>
-            <Section className="w-full py-12">
+            <Section className="w-full py-12 px-6">
                 <Container>
                     <div className="flex flex-col items-center justify-center space-y-4 text-center">
                         <div className={'mb-8'}>
@@ -89,7 +89,7 @@ export default function Page() {
                     </div>
                 </Container>
             </Section>
-            <Section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800">
+            <Section className="w-full px-6 py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800">
                 <Container className="grid items-center justify-center gap-4 px-4 text-center md:px-6">
                     <Box className="space-y-3">
                         <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">
