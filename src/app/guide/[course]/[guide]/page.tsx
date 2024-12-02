@@ -9,7 +9,7 @@ import { transformGuide } from '@/utils/markdown';
 import CodeMirrorEditor, { SupportedLanguage } from '@/components/code-editor/code-editor';
 import Dropdown from '@/components/radix-ui/dropdown';
 import { CaretLeftIcon, CaretRightIcon, CaretSortIcon } from '@radix-ui/react-icons';
-import { GuideType } from '@/app/models/guide';
+import {FilesToTrackType, GuideType} from '@/app/models/guide';
 import { Skeleton } from '@/components/skeleton/skeleton';
 import {Box, IconButton} from '@radix-ui/themes';
 import { parseLanguage } from '@/utils/language';
@@ -43,25 +43,30 @@ export default function Guide() {
 
   const handleNextGuide2 = () => {
     if (currentCourse && currentCourse.guides) {
-      const nextIndex = currentCourse.guides.findIndex((guide: any) => guide._id === guideId) - 1;
-      if (nextIndex < currentCourse.guides.length) {
-        redirect(`/guide/${courseId}/${currentCourse.guides[nextIndex]._id}`);
+      const nextGuideId = currentCourse.guides.findIndex((guide: any) => guide._id === guideId) + 1;
+      if (nextGuideId < currentCourse.guides.length) {
+        redirect(`/guide/${courseId}/${currentCourse.guides[nextGuideId]._id}`);
       }
     }
   };
 
   const submitForReview = async (): Promise<boolean> => {
     try {
-      // const nextGuideId = currentCourse.guides.findIndex((guide: any) => guide._id === guideId) + 1;
+      console.log('Submitting for review...', currentGuide?.filesToTrack);
       const filesToTrack = currentGuide?.filesToTrack;
       const updatedFiles = filesToTrack
-        ? await Promise.all(
-          filesToTrack.map(async (filePath: string) => {
-            const content = await webContainer?.fs.readFile(filePath, 'utf-8');
-            return content || '';
-          })
-        )
-        : [];
+          ? await Promise.all(
+              filesToTrack.map(async (file: string) => {
+                console.log('Reading file:', file);
+                const content = await webContainer?.fs.readFile(file, 'utf-8');
+                return {
+                    fileName: file,
+                    fileContent: content,
+                };
+              })
+          )
+          : [];
+
 
       const modelResponse = await fetch("/api/check-code", {
         method: "POST",
@@ -80,7 +85,7 @@ export default function Guide() {
         }),
       });
       const responseJson = await modelResponse.json(); // Expecting JSON response
-      // console.log('API Response:', responseJson.response, responseJson.response.includes('No'));
+      console.log('API Response:', responseJson.response, responseJson.response.includes('No'));
 
       // setReviewResult(responseJson.response || ''); // Assume the API sends a `message` field
 
