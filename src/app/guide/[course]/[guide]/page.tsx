@@ -72,7 +72,7 @@ export default function Guide() {
         }),
       });
       const responseJson = await modelResponse.json(); // Expecting JSON response
-      console.log('API Response:', responseJson.response, responseJson.response.includes('No'));
+      // console.log('API Response:', responseJson.response, responseJson.response.includes('No'));
 
       setReviewResult(responseJson.response || ''); // Assume the API sends a `message` field
 

@@ -50,8 +50,6 @@ export async function GET(req: Request) {
         file: guide.name,
         content: guide.content
       }));
-
-      console.log('course', course);
       const completedArray = course.guideIds.reduce((map: { [x: string]: boolean; }, guideId: string) => {
         map[guideId] = false; // Initialize all guideId as incomplete (false)
         return map;

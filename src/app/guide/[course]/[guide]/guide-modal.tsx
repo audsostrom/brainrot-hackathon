@@ -7,17 +7,14 @@ export default function ConfirmationModal({ onSubmit, isOpen, onClose, courseId,
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   let response = false;
-  console.log('guide', nextGuideId)
 
   const handleSubmit = async () => {
     setLoading(true);
     setErrorMessage('');
     try {
       response = await onSubmit();
-      if (response) {
-         console.log('heeyy')
-      } else {
-        setErrorMessage('Your code submission is missing something');
+      if (!response) {
+        setErrorMessage('Your code submission is missing something!');
       }
     } catch (error) {
       setErrorMessage('An error occurred. ' + error);
