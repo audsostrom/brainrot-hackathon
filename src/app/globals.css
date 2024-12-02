@@ -37,7 +37,7 @@ code {
 }
 
 pre[class*=language-] {
-  @apply bg-primary dark:bg-black shadow-inner w-full p-2.5 m-0 text-sm overflow-x-auto;
+  @apply bg-primary shadow-inner w-full p-2.5 m-0 text-sm overflow-x-auto;
   margin-top: 0;
   font-family: 'DM Mono', monospace; /* Apply DM Mono to all pre elements */
 
