@@ -71,22 +71,22 @@ export async function GET(req: Request) {
 
     // Add base files not in user guide
     const baseFileContents = await Promise.all(
-      baseProjectFiles.map(async (filePath) => {
-        if (!listOfFiles.has(filePath)) {
-          try {
-            const fileContent = await fs.readFile(
-              path.join(process.cwd(), 'public', 'guides', 'base', filePath),
-              'utf8'
-            );
-            return { file: filePath, content: fileContent };
-          } catch (error) {
-            console.error(`Error reading file ${filePath}:`, error);
+        baseProjectFiles.map(async (filePath) => {
+          if (!listOfFiles.has(filePath)) {
+            try {
+              const fileContent = await fs.readFile(
+                  path.join(process.cwd(), 'public', 'guides', 'base', filePath),
+                  'utf8'
+              );
+              return { file: filePath, content: fileContent };
+            } catch (error) {
+              console.error(`Error reading file ${filePath}:`, error);
+              return null;
+            }
+          } else {
             return null;
           }
-        } else {
-          return null;
-        }
-      })
+        })
     );
 
     const fileContents = [

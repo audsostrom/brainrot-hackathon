@@ -137,7 +137,7 @@ export default function Guide() {
 
         setFiles(initFiles);
       } catch (error) {
-        console.error('Error fetching files:', error);
+        console.error('Page; Error fetching files:', error);
       }
     };
 
