@@ -14,6 +14,8 @@ import { Skeleton } from '@/components/skeleton/skeleton';
 import {Box, IconButton} from '@radix-ui/themes';
 import { parseLanguage } from '@/utils/language';
 import Image from 'next/image';
+import { HfInference } from "@huggingface/inference";
+import ConfirmationModal from './guide-modal';
 
 export default function Guide() {
   /** from the course id and guide id to fetch the appropriate user guide.
@@ -32,11 +34,72 @@ export default function Guide() {
   const guideId = params.guide;
   const courseId = params.course;
 
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [reviewResult, setReviewResult] = useState<string | null>(null);
+
+
+  const handleNextGuide = () => {
+    setModalOpen(true); // Open modal
+  };
+
+  const handleNextGuide2 = () => {
+    if (currentCourse && currentCourse.guides) {
+      const nextIndex = currentCourse.guides.findIndex((guide: any) => guide._id === guideId) - 1;
+      if (nextIndex < currentCourse.guides.length) {
+        redirect(`/guide/${courseId}/${currentCourse.guides[nextIndex]._id}`);
+      }
+    }
+  };
+
+  const submitForReview = async (): Promise<boolean> => {
+    try {
+      const nextGuideId = currentCourse.guides.findIndex((guide: any) => guide._id === guideId) + 1;
+      const filesToTrack = currentGuide?.filesToTrack;
+      const updatedFiles = filesToTrack
+        ? await Promise.all(
+          filesToTrack.map(async (filePath: string) => {
+            const content = await webContainer?.fs.readFile(filePath, 'utf-8');
+            return content || '';
+          })
+        )
+        : [];
+
+      const modelResponse = await fetch("/api/check-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          updatedFiles
+        }),
+      });
+      await fetch(`/api/update-user-guide`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          courseId,
+          updatedFiles,
+        }),
+      });
+      const responseJson = await modelResponse.json(); // Expecting JSON response
+      // console.log('API Response:', responseJson.response, responseJson.response.includes('No'));
+
+      setReviewResult(responseJson.response || ''); // Assume the API sends a `message` field
+
+      // Check if response indicates success
+      if (responseJson.response.includes('No')) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      return false;
+    }
+  };
+
+
   // state for tracking files
 
   const handleSelectGuide = (item: { name: string; id: string }) => {
     redirect(`/guide/${courseId}/${item.id}`);
-    return;
   };
 
   const openFile = async (file: string) => {
@@ -115,46 +178,6 @@ export default function Guide() {
     }
   }, [currentFile]);
 
-  const handleNextGuide = async () => {
-    if (currentCourse && currentCourse.guides) {
-      const nextIndex = currentCourse.guides.findIndex((guide: any) => guide._id === guideId) + 1;
-  
-
-      if (nextIndex < currentCourse.guides.length) {
-        try {
-          // Read files from `filesToTrack`
-          const filesToTrack = currentGuide?.filesToTrack; // Assuming this is part of the current guide
-          if (filesToTrack && webContainer) {
-            const updatedFiles: { fileName: string; fileContent: string }[] = await Promise.all(
-              filesToTrack.map(async (filePath: string) => {
-                const content = await webContainer.fs.readFile(filePath, 'utf-8');
-                return { fileName: filePath, fileContent: content };
-              })
-            );
-  
-            // Update the user guide in the backend
-            await fetch(`/api/update-user-guide`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                courseId,
-                guideId,
-                updatedFiles,
-              }),
-            });
-          }
-  
-          console.log('after post')
-          // Redirect to the next guide
-        } catch (error) {
-          console.error('Error updating user guide:', error);
-        }
-        redirect(`/guide/${courseId}/${currentCourse.guides[nextIndex]._id}`);
-      }
-    }
-  };
-  
-
   const handlePrevGuide = () => {
     if (currentCourse && currentCourse.guides) {
       const prevIndex = currentCourse.guides.findIndex((guide: any) => guide._id === guideId) - 1;
@@ -168,7 +191,7 @@ export default function Guide() {
     <div className="flex-1 flex flex-row max-h-[calc(100vh-68px)] overflow-y-hidden">
       <div className="w-1/3">
         <div className="border-b-[1px] border-primary p-2 flex flex-row items-center">
-        <Dropdown
+          <Dropdown
             label={<CaretSortIcon className="size-8" />}
             items={currentCourse?.guides.map((guide: any) => ({
               name: guide.title,
@@ -195,6 +218,13 @@ export default function Guide() {
             <IconButton className='bg-transparent' onClick={handleNextGuide}>
               <CaretRightIcon className="size-7" />
             </IconButton>
+            <ConfirmationModal
+              isOpen={isModalOpen}
+              onClose={() => setModalOpen(false)}
+              onSubmit={submitForReview}
+              courseId={courseId}
+              handleNextGuide2={handleNextGuide2}
+            />
           </div>
         </div>
         <div className="p-4 h-[calc(100vh-68px-73px)] overflow-y-auto mb-4 flex flex-col">
@@ -206,12 +236,12 @@ export default function Guide() {
             </blockquote>
           )}
           {currentGuide?.image && (
-               <Image
-               src={currentGuide.image}
-               alt="Image description"
-               width={500} // Specify width
-               height={500} // Specify height
-               className='mb-4 self-center'
+            <Image
+              src={currentGuide.image}
+              alt="Image description"
+              width={500} // Specify width
+              height={500} // Specify height
+              className='mb-4 self-center'
             />
           )}
 
