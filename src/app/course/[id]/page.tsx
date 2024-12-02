@@ -5,6 +5,7 @@ import {useEffect, useState} from "react";
 import {getCourseWithGuides} from "@/app/db";
 import {Avatar, Box, Button, Container, Flex, Heading, Link, Text} from "@radix-ui/themes";
 import Image from "next/image";
+import {useSession} from "next-auth/react";
 
 interface Course {
     _id: string;
@@ -13,6 +14,7 @@ interface Course {
     guides: Guide[];
     thumbnail: string;
     author: User;
+    userGuides: { [guideId: string] : boolean };
 }
 
 interface Guide {
@@ -20,7 +22,6 @@ interface Guide {
     courseId: string;
     description: string;
     title: string;
-    
 }
 
 interface User {
@@ -42,24 +43,34 @@ export default function Course() {
     const courseId = params.id as string;
     const [course, setCourse] = useState<Course>();
     const [loading, setLoading] = useState<boolean>(true);
+    const { data: session, status } = useSession()
+    
+    useEffect(() => {
+        const wait = async () => {
+            if (status === 'authenticated') {
+                await sleep(1000);
+                setLoading(false);
+            }
+        }
+        wait();
+    }, [status]);
 
     useEffect(() => {
         const fetchCourse = async () => {
             try {
-                const response = await getCourseWithGuides(courseId);
+                const response = await getCourseWithGuides(courseId, session?.user?.id ?? '');
                 if (!response) {
                     router.push('/404');
                 }
 
                 setCourse(response);
-                await sleep(1000);
-                setLoading(false);
+                console.log('course', response);
             } catch (error) {
                 console.error('Error fetching course:', error);
             }
         };
         fetchCourse();
-    }, []);
+    }, [courseId, router, status]);
 
     if (loading) {
         return (
@@ -104,11 +115,19 @@ export default function Course() {
                                     <Heading as={'h3'} size={'5'} className={'font-bold'}>{guide.title}</Heading>
                                     <Text as={'p'} size={'2'} className={'text-slate-500'}>Course {index+1} of {course?.guides.length}</Text>
                                 </Box>
-                                <Button asChild={true}>
-                                    <Link href={`/guide/${courseId}/${guide._id}`}>
-                                        <Text>Read Guide</Text>
-                                    </Link>
-                                </Button>
+                                { (course.userGuides[guide._id]) ? (
+                                    <Button variant="soft" className={'bg-green-800'} asChild={true}>
+                                        <Link className={'bg-green-800'} href={`/guide/${courseId}/${guide._id}`}>
+                                            <Text>Completed</Text>
+                                        </Link>
+                                    </Button>
+                                    ) : (
+                                    <Button asChild={true}>
+                                        <Link href={`/guide/${courseId}/${guide._id}`}>
+                                            <Text>Read Guide</Text>
+                                        </Link>
+                                    </Button>
+                                )}
                             </Flex>
                         ))}
                     </Box>
