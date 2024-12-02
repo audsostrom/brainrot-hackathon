@@ -20,13 +20,13 @@ const Dropdown = ({ items, onSelect, label }: DropdownProps) => {
       </DropdownMenu.Trigger>
 
       <DropdownMenu.Content
-        className="w-48 p-2 bg-primary border border-gray-300 rounded-lg shadow-lg z-10"
+        className="w-48 p-2 bg-primary dark:bg-primary-dark border border-gray-300 rounded-lg shadow-lg z-10"
         align="start"
       >
         {items.map((item) => (
           <DropdownMenu.Item
             key={item.id}
-            className="px-4 py-2 text-foreground hover:bg-secondary cursor-pointer"
+            className="px-4 py-2 text-foreground dark:text-foreground-dark hover:bg-secondary cursor-pointer"
             onSelect={() => onSelect(item)}
           >
             {item.name}
