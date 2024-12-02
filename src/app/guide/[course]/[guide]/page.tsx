@@ -71,6 +71,14 @@ export default function Guide() {
           updatedFiles
         }),
       });
+      await fetch(`/api/update-user-guide`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          courseId,
+          updatedFiles,
+        }),
+      });
       const responseJson = await modelResponse.json(); // Expecting JSON response
       // console.log('API Response:', responseJson.response, responseJson.response.includes('No'));
 
