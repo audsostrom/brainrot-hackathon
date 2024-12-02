@@ -15,7 +15,6 @@ export async function POST(req: Request) {
 
     const { completed } = await getUserGuide(session?.user?.id ?? '', courseId);
     completed[0][guideId] = true;
-    console.log('completed', completed)
 
     const updatedGuide = await updateUserGuide(session?.user?.id ?? '', courseId, completed, updatedFiles);
     return new Response(JSON.stringify({ response: updatedGuide }), { status: 200 });
