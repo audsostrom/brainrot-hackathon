@@ -10,10 +10,24 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-        primary: "var(--primary)",
-        secondary: "var(--secondary)",
+        primary: {
+          DEFAULT: "var(--primary)",
+          light: "var(--primary-light)",
+          dark: "var(--dark-primary)",
+        },
+        // You can do the same for other colors if needed
+        background: {
+          DEFAULT: "var(--background)",
+          dark: "var(--dark-background)",
+        },
+        foreground: {
+          DEFAULT: "var(--foreground)",
+          dark: "var(--dark-foreground)",
+        },
+        secondary: {
+          DEFAULT: "var(--secondary)",
+          dark: "var(--dark-secondary)",
+        },
       },
     },
   },

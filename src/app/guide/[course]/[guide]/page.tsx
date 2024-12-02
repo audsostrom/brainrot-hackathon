@@ -11,7 +11,7 @@ import Dropdown from '@/components/radix-ui/dropdown';
 import { CaretLeftIcon, CaretRightIcon, CaretSortIcon } from '@radix-ui/react-icons';
 import { GuideType } from '@/app/models/guide';
 import { Skeleton } from '@/components/skeleton/skeleton';
-import { IconButton } from '@radix-ui/themes';
+import {Box, IconButton} from '@radix-ui/themes';
 import { parseLanguage } from '@/utils/language';
 import Image from 'next/image';
 
@@ -138,6 +138,7 @@ export default function Guide() {
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 courseId,
+                guideId,
                 updatedFiles,
               }),
             });
@@ -199,7 +200,7 @@ export default function Guide() {
         <div className="p-4 h-[calc(100vh-68px-73px)] overflow-y-auto mb-4 flex flex-col">
           {currentGuide?.description && (
             <blockquote className="p-4 mt-2 mb-4 border-s-4 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800">
-              <p className="text-md italic font-medium leading-relaxed text-secondary">
+              <p className="text-md italic font-medium leading-relaxed text-secondary dark:text-slate-200">
                 {currentGuide.description}
               </p>
             </blockquote>
@@ -215,11 +216,11 @@ export default function Guide() {
           )}
 
           {currentGuide?.parsedGuideText && (
-            <>
+            <Box id={'parsed'}>
                <div className="parsed-text pb-8" dangerouslySetInnerHTML={{ __html: currentGuide?.parsedGuideText }}></div>
                <div className='h-7 text-xl font-bold mb-1'>Checklist&nbsp;&nbsp;&#x2705;</div>
                <hr></hr>
-            </>
+            </Box>
           )}
         </div>
       </div>

@@ -6,6 +6,7 @@ import { ThemeProvider } from "next-themes";
 import "@radix-ui/themes/styles.css";
 import { Inter } from 'next/font/google';
 import { Theme } from "@radix-ui/themes";
+import {SessionProvider} from "next-auth/react";
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -25,12 +26,14 @@ export default function RootLayout({
             className={`${inter.className} antialiased min-h-screen flex flex-col bg-background text-foreground`}
         >
         <WebContainerProvider>
-            <ThemeProvider attribute="class">
-                <Theme>
-                    <Navbar />
-                    {children}
-                </Theme>
-            </ThemeProvider>
+            <SessionProvider>
+                <ThemeProvider attribute="class">
+                    <Theme>
+                        <Navbar />
+                        {children}
+                    </Theme>
+                </ThemeProvider>
+            </SessionProvider>
         </WebContainerProvider>
         </body>
         </html>

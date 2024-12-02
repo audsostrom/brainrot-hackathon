@@ -159,8 +159,9 @@ export async function getCoursesWithAuthorMeta() {
 }
 
 /** Used in dashboard */
-export async function getCourseWithGuides(courseId: string) {
+export async function getCourseWithGuides(courseId: string, userId: string) {
   try {
+	  console.log('userId', userId);
     await connectMongoDB();
 
     const courseRaw = await Course.findById(new ObjectId(courseId));
@@ -181,15 +182,21 @@ export async function getCourseWithGuides(courseId: string) {
 		const guideRaw = await Guide.findById(new ObjectId(guideId), { content: 0 });
 		const guide = guideRaw?.toObject();
 		guide._id = guideRaw?._id.toString();
+
 		if (guide) {
 			guides.push(guide);
 		}
 	}
 
+	  const userGuideRaw = await UserGuide.findOne({ userId, courseId: course._id }, { completed: 1 });
+	const userGuide = userGuideRaw?.toObject();
+	const userGuideCompleted = userGuide?.completed[0] ?? {};
+
 	return {
 		...course,
 		guides,
 		author,
+		userGuides: userGuideCompleted,
 	};
   } catch (error) {
     console.error('Error fetching courses with guides:', error);
@@ -275,12 +282,16 @@ export async function createUserGuide(userGuide: any) {
 }
 
 
-export async function updateUserGuide(userId: string, courseId: string, updatedFiles: { fileName: string; fileContent: string }[]) {
+export async function updateUserGuide(userId: string, courseId: string, completedObj: { [guideId: string]: boolean }, updatedFiles: { fileName: string; fileContent: string }[]) {
+	console.log('completedObj', completedObj)
 	try {
 		await connectMongoDB();
 		await UserGuide.updateOne(
 			{userId: userId, courseId: courseId},
-			{$set: {files: updatedFiles}}
+			{$set: {
+				files: updatedFiles,
+				completed: completedObj
+			}}
 		);
 	} catch (error) {
 		console.error('Error updating user guides', error);
